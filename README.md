@@ -1,43 +1,51 @@
-# Astro Starter Kit: Minimal
+# Smart Autocare Garage — Website
 
-```sh
-npm create astro@latest -- --template minimal
+Marketing site for SAG. Single-page Astro app with hash-based views (dashboard, about, services, branches, reviews, workshop, contact).
+
+**Stack:** Astro 7, Tailwind CSS 4, GSAP, Lenis, Leaflet
+
+**Node:** 22.12 or newer
+
+## Setup
+
+```bash
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Dev server runs at `http://localhost:4321`.
 
-## 🚀 Project Structure
+## Scripts
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command | What it does |
+|---------|----------------|
+| `npm run dev` | Local development |
+| `npm run build` | Production build → `dist/` |
+| `npm run preview` | Serve the built site locally |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+## Project layout
+
+```
+public/          Static assets (images, video, audio)
+src/
+  components/    Astro UI
+  data/          Branch list, copy, testimonials
+  layouts/       App shell
+  pages/         index.astro (entry)
+  scripts/       Views, motion, map, audio
+  styles/        global.css
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Navigation is client-side: `/#dashboard`, `/#about`, `/#locations`, and so on. Reloading a hash URL opens that view directly.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Deploy
 
-Any static assets, like images, can be placed in the `public/` directory.
+Configured for Vercel and Netlify. Build command is `npm run build`, output directory is `dist`.
 
-## 🧞 Commands
+Push to `main` and connect the repo in Vercel — it should pick up Astro and deploy without extra setup.
 
-All commands are run from the root of the project, from a terminal:
+## Notes
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Branch coordinates and hours live in `src/data/branches.ts`.
+- Map tiles use Leaflet + CARTO dark basemap.
+- `.env` files are gitignored; this site does not need env vars for a standard deploy.
