@@ -268,9 +268,9 @@ function getDashboardPanel() {
 }
 
 const LANDING_WRAP =
-  "explore-close-wrap explore-close-wrap--landing fixed inset-x-0 bottom-0 z-[60] flex w-full justify-stretch md:inset-x-auto md:bottom-10 md:left-1/2 md:w-auto md:-translate-x-1/2";
+  "explore-close-wrap explore-close-wrap--landing explore-close-wrap--pill fixed inset-x-0 bottom-0 z-[60] flex w-full justify-center px-3 pb-[calc(0.65rem+env(safe-area-inset-bottom))] md:inset-x-auto md:bottom-10 md:left-1/2 md:w-auto md:px-0 md:pb-0 md:-translate-x-1/2";
 const DOCKED_WRAP =
-  "explore-close-wrap explore-close-wrap--docked relative z-10 flex w-full shrink-0 justify-center";
+  "explore-close-wrap explore-close-wrap--docked explore-close-wrap--pill relative z-10 flex w-full shrink-0 justify-center px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] md:px-4 md:pb-6";
 
 type NavCtaMode = "explore" | "close" | "back";
 

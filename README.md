@@ -17,10 +17,10 @@ Dev server runs at `http://localhost:4321`.
 
 ## Scripts
 
-| Command | What it does |
-|---------|----------------|
-| `npm run dev` | Local development |
-| `npm run build` | Production build → `dist/` |
+| Command           | What it does                 |
+| ----------------- | ---------------------------- |
+| `npm run dev`     | Local development            |
+| `npm run build`   | Production build → `dist/`   |
 | `npm run preview` | Serve the built site locally |
 
 ## Project layout

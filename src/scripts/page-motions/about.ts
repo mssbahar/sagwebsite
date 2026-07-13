@@ -49,9 +49,25 @@ export const aboutMotion = createPageMotion((root) => {
   const planCleanups: Array<() => void> = [];
 
   planCards.forEach((card) => {
-    const onClick = () => card.classList.toggle("is-flipped");
+    const toggle = () => {
+      card.classList.toggle("is-flipped");
+      card.setAttribute("aria-pressed", String(card.classList.contains("is-flipped")));
+    };
+    const onClick = () => toggle();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggle();
+      }
+    };
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-pressed", "false");
     card.addEventListener("click", onClick);
-    planCleanups.push(() => card.removeEventListener("click", onClick));
+    card.addEventListener("keydown", onKeyDown);
+    planCleanups.push(() => {
+      card.removeEventListener("click", onClick);
+      card.removeEventListener("keydown", onKeyDown);
+    });
   });
 
   if (planCards.length && plansGrid && !prefersReducedMotion()) {

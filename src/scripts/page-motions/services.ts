@@ -2,67 +2,122 @@ import { gsap, prefersReducedMotion, ScrollTrigger } from "../gsap-init";
 import { MOTION } from "../motion";
 import { createPageMotion, getScrollRoot } from "./utils";
 
+const DESKTOP_MQ = "(min-width: 768px)";
+
 function initServicesCatalog(root: HTMLElement, scroller: HTMLElement) {
-  const chapters = [...root.querySelectorAll<HTMLElement>("[data-service-chapter]")];
-  const navLinks = [...root.querySelectorAll<HTMLElement>("[data-service-nav]")];
-  const triggers: ScrollTrigger[] = [];
+  const items = [...root.querySelectorAll<HTMLElement>("[data-service-accordion]")];
+  const triggers = [...root.querySelectorAll<HTMLButtonElement>("[data-service-nav]")];
+  const panels = [...root.querySelectorAll<HTMLElement>("[data-service-panel]")];
+  const scrollTriggers: ScrollTrigger[] = [];
   const cleanups: Array<() => void> = [];
 
-  if (!chapters.length) return () => {};
+  if (!items.length) return () => {};
 
-  const setActive = (id: string) => {
-    navLinks.forEach((link) => {
-      link.classList.toggle("is-active", link.dataset.serviceTarget === id);
+  const isDesktop = () => window.matchMedia(DESKTOP_MQ).matches;
+
+  const setActiveNav = (id: string) => {
+    triggers.forEach((trigger) => {
+      const active = trigger.dataset.serviceTarget === id;
+      trigger.classList.toggle("is-active", active);
+      trigger.setAttribute("aria-expanded", String(active));
     });
   };
 
-  chapters.forEach((chapter, i) => {
-    const id = chapter.dataset.serviceId ?? "";
-    const image = chapter.querySelector<HTMLElement>("[data-service-chapter-img]");
-    const fromX = i % 2 === 0 ? -36 : 36;
+  const openPanel = (index: number) => {
+    panels.forEach((panel, i) => {
+      const open = i === index;
+      panel.classList.toggle("is-open", open);
+      panel.hidden = !open;
+      if (open && !prefersReducedMotion()) {
+        gsap.fromTo(
+          panel,
+          { autoAlpha: 0, y: 8 },
+          { autoAlpha: 1, y: 0, duration: 0.35, ease: MOTION.panelEase },
+        );
+      }
+    });
+    const id = items[index]?.dataset.serviceId;
+    if (id) setActiveNav(id);
+  };
 
-    const nav = navLinks.find((link) => link.dataset.serviceTarget === id);
-    const onNavClick = () => {
-      const top = chapter.offsetTop - 12;
-      scroller.scrollTo({ top, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+  const closeAllPanels = () => {
+    panels.forEach((panel) => {
+      panel.classList.remove("is-open");
+      panel.hidden = true;
+    });
+    triggers.forEach((trigger) => {
+      trigger.classList.remove("is-active");
+      trigger.setAttribute("aria-expanded", "false");
+    });
+  };
+
+  triggers.forEach((trigger, index) => {
+    const onClick = () => {
+      if (isDesktop()) {
+        const chapter = panels[index];
+        if (!chapter) return;
+        const top = chapter.offsetTop - 12;
+        scroller.scrollTo({ top, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+        return;
+      }
+
+      const isOpen = trigger.classList.contains("is-active");
+      if (isOpen) {
+        closeAllPanels();
+        return;
+      }
+      openPanel(index);
     };
-    nav?.addEventListener("click", onNavClick);
-    cleanups.push(() => nav?.removeEventListener("click", onNavClick));
+
+    trigger.addEventListener("click", onClick);
+    cleanups.push(() => trigger.removeEventListener("click", onClick));
+  });
+
+  items.forEach((item, i) => {
+    const id = item.dataset.serviceId ?? "";
+    const panel = panels[i];
+    const image = panel?.querySelector<HTMLElement>("[data-service-chapter-img]");
 
     if (prefersReducedMotion()) return;
 
-    gsap.set(chapter, { autoAlpha: 0, y: 32, x: fromX * 0.25 });
+    if (panel) {
+      gsap.set(panel, { autoAlpha: isDesktop() ? 1 : i === 0 ? 1 : 0, y: 0 });
 
-    triggers.push(
-      ScrollTrigger.create({
-        trigger: chapter,
-        scroller,
-        start: "top 72%",
-        end: "bottom 28%",
-        onEnter: () => setActive(id),
-        onEnterBack: () => setActive(id),
-      }),
-    );
+      scrollTriggers.push(
+        ScrollTrigger.create({
+          trigger: panel,
+          scroller,
+          start: "top 72%",
+          end: "bottom 28%",
+          onEnter: () => {
+            if (isDesktop()) setActiveNav(id);
+          },
+          onEnterBack: () => {
+            if (isDesktop()) setActiveNav(id);
+          },
+        }),
+      );
 
-    triggers.push(
-      ScrollTrigger.create({
-        trigger: chapter,
-        scroller,
-        start: "top 82%",
-        once: true,
-        onEnter: () => {
-          gsap.to(chapter, {
-            autoAlpha: 1,
-            y: 0,
-            x: 0,
-            duration: 0.9,
-            ease: MOTION.panelEase,
-          });
-        },
-      }),
-    );
+      scrollTriggers.push(
+        ScrollTrigger.create({
+          trigger: panel,
+          scroller,
+          start: "top 82%",
+          once: true,
+          onEnter: () => {
+            if (!isDesktop()) return;
+            gsap.to(panel, {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.9,
+              ease: MOTION.panelEase,
+            });
+          },
+        }),
+      );
+    }
 
-    if (image) {
+    if (image && panel) {
       const imgTween = gsap.fromTo(
         image,
         { scale: 1.1 },
@@ -70,7 +125,7 @@ function initServicesCatalog(root: HTMLElement, scroller: HTMLElement) {
           scale: 1,
           ease: "none",
           scrollTrigger: {
-            trigger: chapter,
+            trigger: panel,
             scroller,
             start: "top bottom",
             end: "bottom top",
@@ -85,12 +140,30 @@ function initServicesCatalog(root: HTMLElement, scroller: HTMLElement) {
     }
   });
 
-  if (prefersReducedMotion() && chapters[0]?.dataset.serviceId) {
-    setActive(chapters[0].dataset.serviceId);
-  }
+  const onResize = () => {
+    if (isDesktop()) {
+      panels.forEach((panel) => {
+        panel.hidden = false;
+        panel.classList.add("is-open");
+        gsap.set(panel, { clearProps: "autoAlpha,y" });
+      });
+      if (items[0]?.dataset.serviceId) setActiveNav(items[0].dataset.serviceId);
+    } else {
+      const openIndex = panels.findIndex((p) => p.classList.contains("is-open"));
+      panels.forEach((panel, i) => {
+        const show = i === (openIndex >= 0 ? openIndex : 0);
+        panel.hidden = !show;
+        panel.classList.toggle("is-open", show);
+      });
+    }
+    ScrollTrigger.refresh();
+  };
+
+  window.addEventListener("resize", onResize);
+  cleanups.push(() => window.removeEventListener("resize", onResize));
 
   return () => {
-    triggers.forEach((t) => t.kill());
+    scrollTriggers.forEach((t) => t.kill());
     cleanups.forEach((fn) => fn());
   };
 }
@@ -99,15 +172,30 @@ function initProcessStepper(root: HTMLElement, scroller: HTMLElement) {
   const stepper = root.querySelector<HTMLElement>("[data-services-process]");
   if (!stepper) return () => {};
 
+  const items = [...stepper.querySelectorAll<HTMLElement>(".process-stepper__item")];
   const nodes = [...stepper.querySelectorAll<HTMLButtonElement>("[data-process-step]")];
   const panels = [...stepper.querySelectorAll<HTMLElement>("[data-process-panel]")];
   const cleanups: Array<() => void> = [];
 
-  const activate = (index: number) => {
+  const activate = (index: number, toggleClose = true) => {
+    const current = nodes.findIndex((n) => n.classList.contains("is-active"));
+    if (toggleClose && current === index) {
+      nodes[index]?.classList.remove("is-active");
+      nodes[index]?.setAttribute("aria-selected", "false");
+      nodes[index]?.setAttribute("aria-expanded", "false");
+      const panel = panels[index];
+      if (panel) {
+        panel.classList.remove("is-active");
+        panel.hidden = true;
+      }
+      return;
+    }
+
     nodes.forEach((node, i) => {
       const active = i === index;
       node.classList.toggle("is-active", active);
       node.setAttribute("aria-selected", String(active));
+      node.setAttribute("aria-expanded", String(active));
     });
 
     panels.forEach((panel, i) => {
@@ -124,15 +212,15 @@ function initProcessStepper(root: HTMLElement, scroller: HTMLElement) {
       if (!prefersReducedMotion()) {
         gsap.fromTo(
           panel,
-          { autoAlpha: 0, y: 10 },
-          { autoAlpha: 1, y: 0, duration: 0.4, ease: MOTION.panelEase },
+          { autoAlpha: 0, y: 8 },
+          { autoAlpha: 1, y: 0, duration: 0.35, ease: MOTION.panelEase },
         );
       }
     });
   };
 
   nodes.forEach((node, i) => {
-    const onClick = () => activate(i);
+    const onClick = () => activate(i, true);
     node.addEventListener("click", onClick);
     cleanups.push(() => node.removeEventListener("click", onClick));
   });

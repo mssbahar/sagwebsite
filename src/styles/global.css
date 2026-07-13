@@ -171,6 +171,20 @@
   .action-btn:active {
     transform: scale(0.97);
   }
+  .action-btn--pill {
+    min-height: 3rem;
+    padding: 0.8em 1.35em;
+    border-radius: 999px;
+    box-shadow:
+      0 10px 36px rgb(246 4 124 / 0.32),
+      0 4px 14px rgb(0 0 0 / 0.35);
+  }
+  .explore-close-wrap--pill {
+    pointer-events: none;
+  }
+  .explore-close-wrap--pill .action-btn {
+    pointer-events: auto;
+  }
   .action-btn-divider {
     width: 1px;
     height: 1.05em;
@@ -509,7 +523,7 @@ html[data-hash-inner] .view[data-view="landing"] {
 .about-plans .flip-card {
   background-color: transparent;
   width: 100%;
-  min-height: 254px;
+  min-height: 220px;
   height: 100%;
   perspective: 1000px;
   opacity: 1;
@@ -538,37 +552,40 @@ html[data-hash-inner] .view[data-view="landing"] {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.14em;
-  color: #fff;
-  opacity: 0.9;
+  color: var(--color-accent);
 }
 
 .flip-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 254px;
+  min-height: 220px;
   text-align: center;
   transition: transform 0.8s;
   transform-style: preserve-3d;
 }
 
-.flip-card:hover .flip-card-inner,
-.flip-card:focus-within .flip-card-inner,
+/* Toggle via click only — :hover/:focus-within trap mobile taps (can't flip back). */
 .flip-card.is-flipped .flip-card-inner {
   transform: rotateY(180deg);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .flip-card:hover:not(.is-flipped) .flip-card-inner {
+    transform: rotateY(180deg);
+  }
 }
 
 .flip-card-front,
 .flip-card-back {
   box-shadow: 0 8px 14px 0 rgb(0 0 0 / 0.35);
   position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  min-height: 254px;
+  overflow: hidden;
   padding: 1.25rem 1rem;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -604,13 +621,20 @@ html[data-hash-inner] .view[data-view="landing"] {
   font-size: 0.8125rem;
   line-height: 1.6;
   text-align: center;
-  padding-inline: 0.35rem;
+  padding-inline: 0.5rem;
   color: #fff;
+  overflow-y: auto;
+  max-height: 100%;
 }
 
 @media (min-width: 768px) {
   .flip-card__desc {
     font-size: 0.875rem;
+  }
+
+  .about-plans .flip-card,
+  .about-plans .flip-card-inner {
+    min-height: 254px;
   }
 }
 
@@ -634,87 +658,81 @@ html[data-hash-inner] .view[data-view="landing"] {
   }
 }
 
-/* Services — premium catalog (sticky sidebar + scroll chapters) */
-.services-catalog__layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 2rem;
-}
-
-.services-sidebar {
-  position: sticky;
-  top: 0.5rem;
-  z-index: 5;
-  padding-bottom: 0.5rem;
-  background: linear-gradient(
-    to bottom,
-    rgb(0 0 0 / 0.92) 0%,
-    rgb(0 0 0 / 0.88) 70%,
-    rgb(0 0 0 / 0) 100%
-  );
-}
-
-.services-sidebar__nav {
+/* Services — accordion catalog */
+.services-catalog--accordion {
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
-  overflow-x: auto;
-  padding-bottom: 0.35rem;
-  scrollbar-width: none;
 }
 
-.services-sidebar__nav::-webkit-scrollbar {
-  display: none;
-}
-
-.services-sidebar__link {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: 0.55rem;
+.service-accordion__item {
+  overflow: hidden;
   border: 1px solid rgb(255 255 255 / 0.1);
-  border-radius: 999px;
-  background: rgb(255 255 255 / 0.03);
-  padding: 0.45rem 0.85rem;
-  text-align: left;
-  color: rgb(255 255 255 / 0.55);
-  transition:
-    border-color 0.25s ease,
-    color 0.25s ease,
-    background-color 0.25s ease;
+  border-radius: 0.9rem;
+  background: rgb(255 255 255 / 0.02);
 }
 
-.services-sidebar__link.is-active {
-  border-color: rgb(246 4 124 / 0.45);
-  background: rgb(246 4 124 / 0.1);
+.service-accordion__trigger {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.6rem;
+  border: none;
+  background: transparent;
+  padding: 0.8rem 0.95rem;
+  text-align: left;
+  color: rgb(255 255 255 / 0.6);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.service-accordion__trigger:hover,
+.service-accordion__trigger.is-active {
+  background: rgb(246 4 124 / 0.08);
   color: #fff;
 }
 
-.services-sidebar__num {
+.service-accordion__num {
+  flex-shrink: 0;
   font-size: 0.6rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--color-accent);
 }
 
-.services-sidebar__name {
-  font-size: 0.7rem;
+.service-accordion__name {
+  flex: 1;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
+  line-height: 1.3;
 }
 
-.services-chapters {
+.service-accordion__chevron {
+  flex-shrink: 0;
   display: flex;
-  flex-direction: column;
-  gap: 4.5rem;
+  color: rgb(255 255 255 / 0.45);
+  transition: transform 0.25s ease, color 0.25s ease;
 }
 
-.service-chapter {
+.service-accordion__trigger.is-active .service-accordion__chevron {
+  transform: rotate(180deg);
+  color: var(--color-accent);
+}
+
+.service-accordion__panel {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 1.25rem;
-  padding-top: 0.5rem;
+  gap: 1rem;
+  overflow: hidden;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+  padding: 0.85rem 0.95rem 1rem;
+}
+
+.service-accordion__panel[hidden] {
+  display: none;
 }
 
 .service-chapter__watermark {
@@ -770,53 +788,69 @@ html[data-hash-inner] .view[data-view="landing"] {
 }
 
 @media (min-width: 768px) {
-  .services-catalog__layout {
+  .services-catalog--accordion {
+    display: grid;
     grid-template-columns: minmax(10rem, 12rem) minmax(0, 1fr);
     gap: 2.5rem;
     align-items: start;
   }
 
-  .services-sidebar {
-    top: 1rem;
-    padding-bottom: 0;
+  .service-accordion__item {
+    display: contents;
+    border: none;
+    border-radius: 0;
     background: none;
-  }
-
-  .services-sidebar__nav {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.35rem;
     overflow: visible;
-    padding-bottom: 0;
   }
 
-  .services-sidebar__link {
-    flex-shrink: 1;
-    border-radius: 0.75rem;
-    padding: 0.65rem 0.75rem;
+  .service-accordion__trigger {
+    position: sticky;
+    top: 0.75rem;
+    z-index: 2;
+    grid-column: 1;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.2rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: 0.75rem;
+    padding: 0.65rem 0.75rem;
   }
 
-  .services-sidebar__name {
+  .service-accordion__trigger.is-active {
+    border-color: rgb(246 4 124 / 0.45);
+    background: rgb(246 4 124 / 0.1);
+  }
+
+  .service-accordion__name {
     white-space: normal;
     font-size: 0.75rem;
-    line-height: 1.3;
   }
 
-  .service-chapter {
+  .service-accordion__chevron {
+    display: none;
+  }
+
+  .service-accordion__panel {
+    display: grid !important;
+    grid-column: 2;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     gap: 2rem;
     align-items: center;
     min-height: min(52vh, 24rem);
+    border: none;
+    padding: 0.5rem 0 4.5rem;
+    overflow: visible;
   }
 
-  .service-chapter--flip .service-chapter__visual {
+  .service-accordion__panel[hidden] {
+    display: grid !important;
+  }
+
+  .service-accordion__item:nth-child(even) .service-accordion__panel .service-chapter__visual {
     order: 2;
   }
 
-  .service-chapter--flip .service-chapter__copy {
+  .service-accordion__item:nth-child(even) .service-accordion__panel .service-chapter__copy {
     order: 1;
   }
 
@@ -829,37 +863,34 @@ html[data-hash-inner] .view[data-view="landing"] {
   }
 }
 
-/* Services — process stepper (numbered rail + click panel) */
+/* Services — process stepper (inline accordion steps) */
 .process-stepper {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 0.5rem;
 }
 
-.process-stepper__rail {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  overflow-x: auto;
-  padding-bottom: 0.25rem;
-  scrollbar-width: thin;
+.process-stepper__item {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 0.9rem;
+  background: rgb(255 255 255 / 0.02);
 }
 
 .process-stepper__node {
   display: flex;
+  width: 100%;
   flex-shrink: 0;
-  flex-direction: column;
   align-items: center;
-  gap: 0.45rem;
-  min-width: 4.25rem;
+  gap: 0.75rem;
   border: none;
   background: transparent;
-  padding: 0;
+  padding: 0.75rem 1rem;
   cursor: pointer;
   color: rgb(255 255 255 / 0.55);
   transition:
     color 0.25s ease,
-    transform 0.2s ease;
+    background-color 0.25s ease;
 }
 
 .process-stepper__node:hover {
@@ -868,68 +899,63 @@ html[data-hash-inner] .view[data-view="landing"] {
 
 .process-stepper__node.is-active {
   color: #fff;
+  background: rgb(246 4 124 / 0.08);
 }
 
 .process-stepper__num {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
   border-radius: 999px;
   border: 2px solid rgb(255 255 255 / 0.2);
   background: rgb(0 0 0 / 0.65);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   transition:
     border-color 0.25s ease,
     background-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
+    box-shadow 0.25s ease;
 }
 
 .process-stepper__node.is-active .process-stepper__num {
   border-color: var(--color-accent);
   background: rgb(246 4 124 / 0.18);
   box-shadow: 0 0 0 4px rgb(246 4 124 / 0.12);
-  transform: scale(1.06);
 }
 
 .process-stepper__node-label {
-  font-size: 0.625rem;
+  flex: 1;
+  font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  white-space: nowrap;
+  text-align: left;
 }
 
-.process-stepper__line {
-  flex: 1 1 auto;
-  min-width: 1.5rem;
-  height: 2px;
-  margin-inline: 0.35rem;
-  margin-bottom: 1.35rem;
-  background: linear-gradient(
-    90deg,
-    rgb(246 4 124 / 0.55),
-    rgb(246 4 124 / 0.2)
-  );
+.process-stepper__chevron {
+  flex-shrink: 0;
+  display: flex;
+  color: rgb(255 255 255 / 0.45);
+  transition: transform 0.25s ease, color 0.25s ease;
 }
 
-.process-stepper__panels {
-  position: relative;
-  min-height: 9.5rem;
+.process-stepper__node.is-active .process-stepper__chevron {
+  transform: rotate(180deg);
+  color: var(--color-accent);
 }
 
 .process-stepper__panel {
-  padding: 1.35rem 1.4rem 1.45rem;
-  border-radius: 1rem;
-  border: 1px solid rgb(255 255 255 / 0.1);
+  overflow: hidden;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+  padding: 0.85rem 1rem 1.1rem;
   background: linear-gradient(
     145deg,
-    rgb(255 255 255 / 0.05) 0%,
-    rgb(255 255 255 / 0.02) 100%
+    rgb(255 255 255 / 0.04) 0%,
+    rgb(255 255 255 / 0.01) 100%
   );
 }
 
@@ -968,122 +994,18 @@ html[data-hash-inner] .view[data-view="landing"] {
 }
 
 @media (min-width: 768px) {
-  .process-stepper__rail {
-    justify-content: center;
-    overflow-x: visible;
-    gap: 0;
-  }
-
-  .process-stepper__line {
-    max-width: 5rem;
-  }
-
   .process-stepper__panel {
-    padding: 1.5rem 1.6rem 1.6rem;
+    padding: 1.15rem 1.25rem 1.25rem;
   }
 
   .process-stepper__panel-title {
     font-size: 1.35rem;
   }
-}
-
-@media (min-width: 1024px) {
-  .process-stepper {
-    gap: 2rem;
-  }
-
-  .process-stepper__line {
-    max-width: 6.5rem;
-  }
 
   .process-stepper__num {
-    width: 2.75rem;
-    height: 2.75rem;
-    font-size: 0.78rem;
-  }
-
-  .process-stepper__panels {
-    max-width: 42rem;
-    margin-inline: auto;
-    width: 100%;
-  }
-}
-
-@media (max-width: 767px) {
-  .process-stepper {
-    gap: 1.25rem;
-  }
-
-  .process-stepper__rail {
-    flex-direction: column;
-    align-items: stretch;
-    overflow-x: visible;
-    gap: 0;
-    padding: 0.15rem 0.25rem;
-  }
-
-  .process-stepper__node {
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.75rem;
-    min-width: 0;
-    width: 100%;
-    min-height: 2.75rem;
-    padding: 0.4rem 0.55rem;
-    border-radius: 0.75rem;
-  }
-
-  .process-stepper__node.is-active {
-    background: rgb(246 4 124 / 0.1);
-  }
-
-  .process-stepper__node.is-active .process-stepper__num {
-    transform: none;
-  }
-
-  .process-stepper__num {
-    width: 2.25rem;
-    height: 2.25rem;
-    flex-shrink: 0;
-    font-size: 0.68rem;
-  }
-
-  .process-stepper__node-label {
-    font-size: 0.6875rem;
-    letter-spacing: 0.12em;
-    text-align: left;
-  }
-
-  .process-stepper__line {
-    flex: none;
-    width: 2px;
-    height: 0.85rem;
-    min-width: 0;
-    margin: 0 0 0 1.1rem;
-    align-self: flex-start;
-    background: linear-gradient(
-      to bottom,
-      rgb(246 4 124 / 0.65),
-      rgb(246 4 124 / 0.15)
-    );
-  }
-
-  .process-stepper__panels {
-    min-height: auto;
-  }
-
-  .process-stepper__panel {
-    padding: 1.1rem 1.15rem 1.2rem;
-  }
-
-  .process-stepper__panel-title {
-    font-size: 1.1rem;
-  }
-
-  .process-stepper__panel-desc {
-    font-size: 0.8125rem;
-    line-height: 1.6;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.72rem;
   }
 }
 
@@ -1337,6 +1259,16 @@ html[data-hash-inner] .view[data-view="landing"] {
 }
 
 /* Dashboard tile hover — subtle overlay brighten + image zoom */
+[data-tile-nav] {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-tile-nav] [data-tile-image],
+[data-tile-nav] [data-tile-overlay] {
+  pointer-events: none;
+}
+
 [data-tile-nav] [data-tile-image] {
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -2315,10 +2247,8 @@ html[data-hash-inner] .view[data-view="landing"] {
    Full-width bottom bar, dashboard tile reflow, safe areas
    ═══════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-  /* Bottom action bar — full width pink bar */
-  #explore-close-wrap,
+  /* Bottom action bar — 363 floating pill (landing + inner pages) */
   #explore-close-wrap.explore-close-wrap--landing,
-  #explore-close-wrap.explore-close-wrap--docked,
   #explore-close-wrap.inner-page-cta-wrap {
     position: fixed !important;
     left: 0 !important;
@@ -2328,17 +2258,35 @@ html[data-hash-inner] .view[data-view="landing"] {
     max-width: none !important;
     transform: none !important;
     z-index: 70;
-    padding: 0;
+    padding: 0 0.75rem calc(0.65rem + env(safe-area-inset-bottom, 0px)) !important;
+    justify-content: center;
+  }
+
+  /* Dashboard close — pill in layout row */
+  #explore-close-wrap.explore-close-wrap--docked {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    transform: none !important;
+    z-index: 20;
+    padding: 0.35rem 0.75rem calc(0.5rem + env(safe-area-inset-bottom, 0px)) !important;
+    justify-content: center;
   }
 
   #explore-close-wrap .action-btn {
     width: 100%;
-    border-radius: 0;
-    min-height: 2.75rem;
-    padding: 0.6em 1em;
-    padding-bottom: calc(0.6em + env(safe-area-inset-bottom, 0px));
+    max-width: 22rem;
+    min-height: 3rem;
+    padding: 0.75em 1.25em;
+    border-radius: 999px;
     font-size: 0.875rem;
-    box-shadow: 0 -4px 24px rgb(0 0 0 / 0.35);
+    letter-spacing: 0.04em;
+    box-shadow:
+      0 10px 36px rgb(246 4 124 / 0.32),
+      0 4px 14px rgb(0 0 0 / 0.35);
   }
 
   #explore-close-wrap .action-btn-stack {
@@ -2360,7 +2308,7 @@ html[data-hash-inner] .view[data-view="landing"] {
 
   .dashboard-cta-anchor,
   .inner-page-cta-anchor {
-    min-height: calc(2.75rem + env(safe-area-inset-bottom, 0px));
+    min-height: calc(3.25rem + env(safe-area-inset-bottom, 0px));
     padding: 0 !important;
   }
 
@@ -2369,43 +2317,55 @@ html[data-hash-inner] .view[data-view="landing"] {
     width: 100%;
   }
 
-  /* Dashboard — explicit mobile bento (no overlap) */
+  /* Dashboard — flex stack on mobile (avoids Tailwind grid overlap) */
   .dashboard-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    grid-template-areas:
-      "hero hero"
-      "services services"
-      "stats stats"
-      "reviews reviews"
-      "branches workshop"
-      "contact contact" !important;
-    grid-auto-rows: minmax(0, auto) !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    grid-template-columns: none !important;
     grid-template-rows: none !important;
-    align-content: start;
+    grid-template-areas: none !important;
+    align-content: flex-start;
     gap: 0.5rem;
     padding-bottom: 0.35rem;
   }
 
   .dashboard-grid > * {
-    grid-row: auto !important;
-    grid-column: auto !important;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
     min-height: 0;
+    width: 100%;
+    grid-area: unset !important;
+    grid-column: unset !important;
+    grid-row: unset !important;
+    transform: none;
   }
 
   .dashboard-tile--hero {
-    grid-area: hero !important;
-    min-height: 10.5rem;
+    order: 1;
+    min-height: 9.5rem;
   }
 
   .dashboard-tile--services {
-    grid-area: services !important;
-    min-height: 7.5rem;
+    order: 2;
+    min-height: 6.5rem;
+  }
+
+  .dashboard-tile--branches {
+    order: 3;
+    width: calc(50% - 0.25rem);
+    min-height: 7.25rem;
+  }
+
+  .dashboard-tile--workshop {
+    order: 4;
+    width: calc(50% - 0.25rem);
+    min-height: 7.25rem;
   }
 
   .dashboard-tile--stats {
-    grid-area: stats !important;
-    min-height: 4.75rem;
+    order: 5;
+    min-height: 4.25rem;
   }
 
   .dashboard-tile--stats > div {
@@ -2421,23 +2381,13 @@ html[data-hash-inner] .view[data-view="landing"] {
   }
 
   .dashboard-tile--reviews {
-    grid-area: reviews !important;
+    order: 6;
     min-height: 7rem;
-  }
-
-  .dashboard-tile--branches {
-    grid-area: branches !important;
-    min-height: 7.5rem;
-  }
-
-  .dashboard-tile--workshop {
-    grid-area: workshop !important;
-    min-height: 7.5rem;
   }
 
   .dashboard-tile--contact {
-    grid-area: contact !important;
-    min-height: 7rem;
+    order: 7;
+    min-height: 6.75rem;
   }
 
   .bento-tile:hover,
@@ -2458,38 +2408,18 @@ html[data-hash-inner] .view[data-view="landing"] {
     font-size: clamp(1.85rem, 8.5vw, 2.5rem);
   }
 
-  /* Services catalog — 2×2 nav so 03/04 stay visible */
-  .services-sidebar__nav {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.45rem;
-    overflow: visible;
-    padding-bottom: 0;
-  }
-
-  .services-sidebar__link {
-    flex-shrink: 1;
-    min-width: 0;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.25rem;
-    padding: 0.5rem 0.65rem;
-    border-radius: 0.75rem;
-  }
-
-  .services-sidebar__name {
-    white-space: normal;
-    font-size: 0.65rem;
-    line-height: 1.25;
-  }
-
-  /* Services chapters — tighter mobile spacing */
-  .services-chapters {
-    gap: 3rem;
+  /* Services accordion — mobile panel typography */
+  .service-accordion__panel {
+    padding: 0.75rem 0.85rem 0.95rem;
   }
 
   .service-chapter__title {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
+  }
+
+  .service-chapter__desc {
+    font-size: 0.8125rem;
+    line-height: 1.65;
   }
 
   /* Workshop bays — tighter */
@@ -2506,35 +2436,7 @@ html[data-hash-inner] .view[data-view="landing"] {
     display: none;
   }
 
-  /* Process stepper — vertical rail handled above */
-
-  /* Future plans — 2×2 grid, compact cards so 03/04 show on screen */
-  .about-plans {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 0.65rem;
-  }
-
-  .about-plans .flip-card {
-    min-height: 10.5rem;
-  }
-
-  .about-plans .flip-card-inner,
-  .about-plans .flip-card-front,
-  .about-plans .flip-card-back {
-    min-height: 10.5rem;
-    padding: 0.85rem 0.65rem;
-  }
-
-  .about-plans .flip-card__title {
-    font-size: 0.8rem;
-    padding-inline: 0.35rem;
-  }
-
-  .about-plans .flip-card__num {
-    margin-bottom: 0.4rem;
-    font-size: 0.65rem;
-    color: var(--color-accent);
-  }
+  /* Process stepper — handled in main block */
 
   /* Reviews — tighter card + nav on small screens */
   .reviews-showcase__layout {
@@ -2572,19 +2474,6 @@ html[data-hash-inner] .view[data-view="landing"] {
 
   .contact-card {
     min-height: auto;
-  }
-}
-
-@media (min-width: 480px) and (max-width: 767px) {
-  .about-plans .flip-card,
-  .about-plans .flip-card-inner,
-  .about-plans .flip-card-front,
-  .about-plans .flip-card-back {
-    min-height: 11.5rem;
-  }
-
-  .about-plans .flip-card__title {
-    font-size: 0.875rem;
   }
 }
 
