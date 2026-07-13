@@ -505,6 +505,135 @@ html[data-hash-inner] .view[data-view="landing"] {
   padding-top: 0;
 }
 
+/* About — future plans flip cards */
+.about-plans .flip-card {
+  background-color: transparent;
+  width: 100%;
+  min-height: 254px;
+  height: 100%;
+  perspective: 1000px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.flip-card__title {
+  font-size: 1rem;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+  line-height: 1.25;
+  padding-inline: 0.75rem;
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .flip-card__title {
+    font-size: 1.15rem;
+  }
+}
+
+.flip-card__num {
+  display: block;
+  margin-bottom: 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #fff;
+  opacity: 0.9;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 254px;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner,
+.flip-card:focus-within .flip-card-inner,
+.flip-card.is-flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  box-shadow: 0 8px 14px 0 rgb(0 0 0 / 0.35);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 254px;
+  padding: 1.25rem 1rem;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid rgb(246 4 124 / 0.55);
+  border-radius: 1rem;
+}
+
+.flip-card-front {
+  background: linear-gradient(
+    120deg,
+    rgb(18 8 14) 60%,
+    rgb(42 10 28) 88%,
+    rgb(58 8 36) 40%,
+    rgb(246 4 124 / 0.35) 48%
+  );
+  color: #fff;
+}
+
+.flip-card-back {
+  background: linear-gradient(
+    120deg,
+    rgb(180 4 90) 30%,
+    rgb(246 4 124) 88%,
+    rgb(28 6 18) 40%,
+    rgb(200 20 100) 78%
+  );
+  color: #fff;
+  transform: rotateY(180deg);
+}
+
+.flip-card__desc {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  text-align: center;
+  padding-inline: 0.35rem;
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .flip-card__desc {
+    font-size: 0.875rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-card-inner {
+    transform: none !important;
+    transition: none;
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    position: relative;
+    min-height: auto;
+    transform: none;
+    backface-visibility: visible;
+  }
+
+  .flip-card-back {
+    margin-top: 0.5rem;
+    border-radius: 0.85rem;
+  }
+}
+
 /* Services — premium catalog (sticky sidebar + scroll chapters) */
 .services-catalog__layout {
   display: grid;
@@ -700,54 +829,269 @@ html[data-hash-inner] .view[data-view="landing"] {
   }
 }
 
-.services-process__list {
-  list-style: none;
-  margin: 0;
+/* Services — process stepper (numbered rail + click panel) */
+.process-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.process-stepper__rail {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: thin;
+}
+
+.process-stepper__node {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 4.25rem;
+  border: none;
+  background: transparent;
   padding: 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+  cursor: pointer;
+  color: rgb(255 255 255 / 0.55);
+  transition:
+    color 0.25s ease,
+    transform 0.2s ease;
 }
 
-@media (min-width: 768px) {
-  .services-process__list {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.25rem;
-  }
+.process-stepper__node:hover {
+  color: rgb(255 255 255 / 0.85);
 }
 
-.services-process__step {
-  position: relative;
-  padding: 1.25rem 1.25rem 1.35rem;
-  border-radius: 1rem;
-  border: 1px solid rgb(255 255 255 / 0.08);
-  background: rgb(255 255 255 / 0.02);
+.process-stepper__node.is-active {
+  color: #fff;
 }
 
-.services-process__icon {
-  margin-bottom: 1rem;
+.process-stepper__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 2px solid rgb(255 255 255 / 0.2);
+  background: rgb(0 0 0 / 0.65);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
-.services-process__num {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.65rem;
-  font-weight: 700;
+.process-stepper__node.is-active .process-stepper__num {
+  border-color: var(--color-accent);
+  background: rgb(246 4 124 / 0.18);
+  box-shadow: 0 0 0 4px rgb(246 4 124 / 0.12);
+  transform: scale(1.06);
+}
+
+.process-stepper__node-label {
+  font-size: 0.625rem;
+  font-weight: 600;
   letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.process-stepper__line {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  height: 2px;
+  margin-inline: 0.35rem;
+  margin-bottom: 1.35rem;
+  background: linear-gradient(
+    90deg,
+    rgb(246 4 124 / 0.55),
+    rgb(246 4 124 / 0.2)
+  );
+}
+
+.process-stepper__panels {
+  position: relative;
+  min-height: 9.5rem;
+}
+
+.process-stepper__panel {
+  padding: 1.35rem 1.4rem 1.45rem;
+  border-radius: 1rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: linear-gradient(
+    145deg,
+    rgb(255 255 255 / 0.05) 0%,
+    rgb(255 255 255 / 0.02) 100%
+  );
+}
+
+.process-stepper__panel[hidden] {
+  display: none;
+}
+
+.process-stepper__panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+}
+
+.process-stepper__panel-step {
+  margin: 0;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--color-accent);
 }
 
-.services-process__title {
-  margin: 0 0 0.45rem;
-  font-size: 1rem;
+.process-stepper__panel-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
   font-weight: 800;
+  color: #fff;
 }
 
-.services-process__desc {
+.process-stepper__panel-desc {
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   line-height: 1.65;
-  color: rgb(255 255 255 / 0.62);
+  color: rgb(255 255 255 / 0.72);
+}
+
+@media (min-width: 768px) {
+  .process-stepper__rail {
+    justify-content: center;
+    overflow-x: visible;
+    gap: 0;
+  }
+
+  .process-stepper__line {
+    max-width: 5rem;
+  }
+
+  .process-stepper__panel {
+    padding: 1.5rem 1.6rem 1.6rem;
+  }
+
+  .process-stepper__panel-title {
+    font-size: 1.35rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .process-stepper {
+    gap: 2rem;
+  }
+
+  .process-stepper__line {
+    max-width: 6.5rem;
+  }
+
+  .process-stepper__num {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 0.78rem;
+  }
+
+  .process-stepper__panels {
+    max-width: 42rem;
+    margin-inline: auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .process-stepper {
+    gap: 1.25rem;
+  }
+
+  .process-stepper__rail {
+    flex-direction: column;
+    align-items: stretch;
+    overflow-x: visible;
+    gap: 0;
+    padding: 0.15rem 0.25rem;
+  }
+
+  .process-stepper__node {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.4rem 0.55rem;
+    border-radius: 0.75rem;
+  }
+
+  .process-stepper__node.is-active {
+    background: rgb(246 4 124 / 0.1);
+  }
+
+  .process-stepper__node.is-active .process-stepper__num {
+    transform: none;
+  }
+
+  .process-stepper__num {
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    font-size: 0.68rem;
+  }
+
+  .process-stepper__node-label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-align: left;
+  }
+
+  .process-stepper__line {
+    flex: none;
+    width: 2px;
+    height: 0.85rem;
+    min-width: 0;
+    margin: 0 0 0 1.1rem;
+    align-self: flex-start;
+    background: linear-gradient(
+      to bottom,
+      rgb(246 4 124 / 0.65),
+      rgb(246 4 124 / 0.15)
+    );
+  }
+
+  .process-stepper__panels {
+    min-height: auto;
+  }
+
+  .process-stepper__panel {
+    padding: 1.1rem 1.15rem 1.2rem;
+  }
+
+  .process-stepper__panel-title {
+    font-size: 1.1rem;
+  }
+
+  .process-stepper__panel-desc {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 380px) {
+  .process-stepper__node-label {
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+  }
 }
 
 /* About — classic center-line journey timeline */
@@ -1460,14 +1804,25 @@ html[data-hash-inner] .view[data-view="landing"] {
 }
 
 .reviews-showcase__card-wrap {
+  display: flex;
   min-width: 0;
   width: 100%;
+  align-items: center;
+  gap: 0.65rem;
   align-self: center;
+}
+
+@media (min-width: 768px) {
+  .reviews-showcase__card-wrap {
+    gap: 0.85rem;
+  }
 }
 
 .reviews-showcase__card {
   position: relative;
   isolation: isolate;
+  flex: 1 1 auto;
+  min-width: 0;
   overflow: hidden;
   border-radius: 1.25rem;
   border: 1px solid rgb(255 255 255 / 0.12);
@@ -1644,9 +1999,18 @@ html[data-hash-inner] .view[data-view="landing"] {
 }
 
 .reviews-showcase__controls {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  display: none;
+}
+
+.reviews-showcase__nav--side {
+  flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+  .reviews-showcase__nav--side {
+    width: 2.35rem;
+    height: 2.35rem;
+  }
 }
 
 .reviews-showcase__nav {
@@ -1970,10 +2334,10 @@ html[data-hash-inner] .view[data-view="landing"] {
   #explore-close-wrap .action-btn {
     width: 100%;
     border-radius: 0;
-    min-height: 3.25rem;
-    padding: 0.85em 1.15em;
-    padding-bottom: calc(0.85em + env(safe-area-inset-bottom, 0px));
-    font-size: 0.95rem;
+    min-height: 2.75rem;
+    padding: 0.6em 1em;
+    padding-bottom: calc(0.6em + env(safe-area-inset-bottom, 0px));
+    font-size: 0.875rem;
     box-shadow: 0 -4px 24px rgb(0 0 0 / 0.35);
   }
 
@@ -1996,7 +2360,7 @@ html[data-hash-inner] .view[data-view="landing"] {
 
   .dashboard-cta-anchor,
   .inner-page-cta-anchor {
-    min-height: calc(3.25rem + env(safe-area-inset-bottom, 0px));
+    min-height: calc(2.75rem + env(safe-area-inset-bottom, 0px));
     padding: 0 !important;
   }
 
@@ -2005,39 +2369,43 @@ html[data-hash-inner] .view[data-view="landing"] {
     width: 100%;
   }
 
-  /* Dashboard — 2-col bento reflow (363 tile stack) */
+  /* Dashboard — explicit mobile bento (no overlap) */
   .dashboard-grid {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    grid-auto-rows: minmax(7rem, auto) !important;
+    grid-template-areas:
+      "hero hero"
+      "services services"
+      "stats stats"
+      "reviews reviews"
+      "branches workshop"
+      "contact contact" !important;
+    grid-auto-rows: minmax(0, auto) !important;
     grid-template-rows: none !important;
     align-content: start;
+    gap: 0.5rem;
     padding-bottom: 0.35rem;
   }
 
   .dashboard-grid > * {
     grid-row: auto !important;
     grid-column: auto !important;
-    grid-column-start: auto !important;
-    grid-column-end: auto !important;
-    grid-row-start: auto !important;
-    grid-row-end: auto !important;
-    min-height: 7.5rem;
+    min-height: 0;
   }
 
   .dashboard-tile--hero {
-    grid-column: 1 / -1 !important;
-    min-height: 12.5rem;
+    grid-area: hero !important;
+    min-height: 10.5rem;
   }
 
   .dashboard-tile--services {
-    grid-column: 1 / -1 !important;
-    min-height: 9.5rem;
+    grid-area: services !important;
+    min-height: 7.5rem;
   }
 
   .dashboard-tile--stats {
-    grid-column: 1 / -1 !important;
-    min-height: 5.5rem;
+    grid-area: stats !important;
+    min-height: 4.75rem;
   }
 
   .dashboard-tile--stats > div {
@@ -2053,14 +2421,23 @@ html[data-hash-inner] .view[data-view="landing"] {
   }
 
   .dashboard-tile--reviews {
-    grid-column: 1 / -1 !important;
-    min-height: 8rem;
+    grid-area: reviews !important;
+    min-height: 7rem;
   }
 
-  .dashboard-tile--branches,
-  .dashboard-tile--workshop,
+  .dashboard-tile--branches {
+    grid-area: branches !important;
+    min-height: 7.5rem;
+  }
+
+  .dashboard-tile--workshop {
+    grid-area: workshop !important;
+    min-height: 7.5rem;
+  }
+
   .dashboard-tile--contact {
-    min-height: 8.25rem;
+    grid-area: contact !important;
+    min-height: 7rem;
   }
 
   .bento-tile:hover,
@@ -2079,6 +2456,31 @@ html[data-hash-inner] .view[data-view="landing"] {
   .services-hero h1,
   .about-hero h1 {
     font-size: clamp(1.85rem, 8.5vw, 2.5rem);
+  }
+
+  /* Services catalog — 2×2 nav so 03/04 stay visible */
+  .services-sidebar__nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  .services-sidebar__link {
+    flex-shrink: 1;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: 0.75rem;
+  }
+
+  .services-sidebar__name {
+    white-space: normal;
+    font-size: 0.65rem;
+    line-height: 1.25;
   }
 
   /* Services chapters — tighter mobile spacing */
@@ -2104,9 +2506,85 @@ html[data-hash-inner] .view[data-view="landing"] {
     display: none;
   }
 
-  /* Contact cards — single column on narrow phones */
+  /* Process stepper — vertical rail handled above */
+
+  /* Future plans — 2×2 grid, compact cards so 03/04 show on screen */
+  .about-plans {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.65rem;
+  }
+
+  .about-plans .flip-card {
+    min-height: 10.5rem;
+  }
+
+  .about-plans .flip-card-inner,
+  .about-plans .flip-card-front,
+  .about-plans .flip-card-back {
+    min-height: 10.5rem;
+    padding: 0.85rem 0.65rem;
+  }
+
+  .about-plans .flip-card__title {
+    font-size: 0.8rem;
+    padding-inline: 0.35rem;
+  }
+
+  .about-plans .flip-card__num {
+    margin-bottom: 0.4rem;
+    font-size: 0.65rem;
+    color: var(--color-accent);
+  }
+
+  /* Reviews — tighter card + nav on small screens */
+  .reviews-showcase__layout {
+    gap: 1.5rem;
+  }
+
+  .reviews-showcase__card-wrap {
+    gap: 0.45rem;
+  }
+
+  .reviews-showcase__nav--side {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .reviews-showcase__slide {
+    padding: 1rem 1.05rem 1.15rem;
+  }
+
+  .reviews-showcase__quote {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  .reviews-showcase__photos {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  /* Services process section spacing */
+  .services-process {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
   .contact-card {
     min-height: auto;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .about-plans .flip-card,
+  .about-plans .flip-card-inner,
+  .about-plans .flip-card-front,
+  .about-plans .flip-card-back {
+    min-height: 11.5rem;
+  }
+
+  .about-plans .flip-card__title {
+    font-size: 0.875rem;
   }
 }
 

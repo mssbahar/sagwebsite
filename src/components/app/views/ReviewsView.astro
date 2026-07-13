@@ -22,29 +22,18 @@ import { reviewsTrust } from "../../../data/reviews";
         </h1>
 
         <p class="reviews-showcase__description">{reviewsTrust.description}</p>
-
-        <div class="reviews-showcase__controls">
-          <button
-            type="button"
-            data-carousel-prev
-            class="reviews-showcase__nav focus-ring"
-            aria-label="Previous review"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            type="button"
-            data-carousel-next
-            class="reviews-showcase__nav focus-ring"
-            aria-label="Next review"
-          >
-            <ChevronRight size={20} />
-          </button>
-        </div>
       </div>
 
-      <!-- Review card -->
       <div class="reviews-showcase__card-wrap">
+        <button
+          type="button"
+          data-carousel-prev
+          class="reviews-showcase__nav reviews-showcase__nav--side focus-ring"
+          aria-label="Previous review"
+        >
+          <ChevronLeft size={20} />
+        </button>
+
         <div class="reviews-showcase__card bento-premium">
           <div data-carousel-viewport class="reviews-showcase__viewport">
             {
@@ -91,6 +80,15 @@ import { reviewsTrust } from "../../../data/reviews";
             }
           </div>
         </div>
+
+        <button
+          type="button"
+          data-carousel-next
+          class="reviews-showcase__nav reviews-showcase__nav--side focus-ring"
+          aria-label="Next review"
+        >
+          <ChevronRight size={20} />
+        </button>
       </div>
     </div>
   </section>

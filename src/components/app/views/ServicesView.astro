@@ -105,20 +105,52 @@ import { services, servicesHero, serviceProcess, servicesCta } from "../../../da
       <h2 class="text-2xl font-black md:text-3xl">How it works</h2>
     </div>
 
-    <ol data-services-process class="services-process__list">
-      {
-        serviceProcess.map((step) => (
-          <li class="services-process__step">
-            <div class="services-process__icon">
-              <PinkDot icon={step.icon} />
-            </div>
-            <span class="services-process__num">{step.step}</span>
-            <h3 class="services-process__title">{step.title}</h3>
-            <p class="services-process__desc">{step.description}</p>
-          </li>
-        ))
-      }
-    </ol>
+    <div data-services-process class="process-stepper">
+      <div class="process-stepper__rail" role="tablist" aria-label="Service process steps">
+        {
+          serviceProcess.map((step, i) => (
+            <>
+              <button
+                type="button"
+                role="tab"
+                data-process-step={i}
+                class:list={["process-stepper__node focus-ring", i === 0 && "is-active"]}
+                aria-selected={i === 0 ? "true" : "false"}
+                aria-controls={`process-panel-${step.step}`}
+                id={`process-tab-${step.step}`}
+              >
+                <span class="process-stepper__num">{step.step}</span>
+                <span class="process-stepper__node-label">Step {step.step}</span>
+              </button>
+              {i < serviceProcess.length - 1 && <span class="process-stepper__line" aria-hidden="true" />}
+            </>
+          ))
+        }
+      </div>
+
+      <div class="process-stepper__panels">
+        {
+          serviceProcess.map((step, i) => (
+            <article
+              id={`process-panel-${step.step}`}
+              role="tabpanel"
+              aria-labelledby={`process-tab-${step.step}`}
+              data-process-panel
+              data-process-index={i}
+              class:list={["process-stepper__panel services-process__step", i === 0 && "is-active"]}
+              hidden={i !== 0}
+            >
+              <div class="process-stepper__panel-head">
+                <PinkDot icon={step.icon} />
+                <p class="process-stepper__panel-step">Step {step.step}</p>
+              </div>
+              <h3 class="process-stepper__panel-title">{step.title}</h3>
+              <p class="process-stepper__panel-desc">{step.description}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
   </section>
 
   <div class="reveal w-full pb-6 md:pb-10">

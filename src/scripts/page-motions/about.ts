@@ -46,11 +46,19 @@ export const aboutMotion = createPageMotion((root) => {
 
   const planCards = [...root.querySelectorAll<HTMLElement>("[data-about-plan]")];
   const plansGrid = root.querySelector<HTMLElement>("[data-about-plans-grid]");
-  if (planCards.length && plansGrid) {
-    gsap.set(planCards, { autoAlpha: prefersReducedMotion() ? 1 : 0, y: prefersReducedMotion() ? 0 : 28 });
-    if (!prefersReducedMotion()) {
-      gsap.to(planCards, {
-        autoAlpha: 1,
+  const planCleanups: Array<() => void> = [];
+
+  planCards.forEach((card) => {
+    const onClick = () => card.classList.toggle("is-flipped");
+    card.addEventListener("click", onClick);
+    planCleanups.push(() => card.removeEventListener("click", onClick));
+  });
+
+  if (planCards.length && plansGrid && !prefersReducedMotion()) {
+    gsap.fromTo(
+      planCards,
+      { y: 28, opacity: 1 },
+      {
         y: 0,
         duration: 0.85,
         stagger: 0.1,
@@ -59,13 +67,14 @@ export const aboutMotion = createPageMotion((root) => {
           trigger: plansGrid,
           scroller,
           start: "top 85%",
-          toggleActions: "play none none reverse",
+          once: true,
         },
-      });
-    }
+      },
+    );
   }
 
   return () => {
+    planCleanups.forEach((fn) => fn());
     teardownJourney?.();
     teardownJourney = undefined;
   };

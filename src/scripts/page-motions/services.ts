@@ -95,6 +95,73 @@ function initServicesCatalog(root: HTMLElement, scroller: HTMLElement) {
   };
 }
 
+function initProcessStepper(root: HTMLElement, scroller: HTMLElement) {
+  const stepper = root.querySelector<HTMLElement>("[data-services-process]");
+  if (!stepper) return () => {};
+
+  const nodes = [...stepper.querySelectorAll<HTMLButtonElement>("[data-process-step]")];
+  const panels = [...stepper.querySelectorAll<HTMLElement>("[data-process-panel]")];
+  const cleanups: Array<() => void> = [];
+
+  const activate = (index: number) => {
+    nodes.forEach((node, i) => {
+      const active = i === index;
+      node.classList.toggle("is-active", active);
+      node.setAttribute("aria-selected", String(active));
+    });
+
+    panels.forEach((panel, i) => {
+      const active = i === index;
+      if (!active) {
+        panel.classList.remove("is-active");
+        panel.hidden = true;
+        return;
+      }
+
+      panel.hidden = false;
+      panel.classList.add("is-active");
+
+      if (!prefersReducedMotion()) {
+        gsap.fromTo(
+          panel,
+          { autoAlpha: 0, y: 10 },
+          { autoAlpha: 1, y: 0, duration: 0.4, ease: MOTION.panelEase },
+        );
+      }
+    });
+  };
+
+  nodes.forEach((node, i) => {
+    const onClick = () => activate(i);
+    node.addEventListener("click", onClick);
+    cleanups.push(() => node.removeEventListener("click", onClick));
+  });
+
+  let enterTrigger: ScrollTrigger | undefined;
+  if (!prefersReducedMotion()) {
+    gsap.set(stepper, { autoAlpha: 0, y: 20 });
+    enterTrigger = ScrollTrigger.create({
+      trigger: stepper,
+      scroller,
+      start: "top 88%",
+      once: true,
+      onEnter: () => {
+        gsap.to(stepper, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.75,
+          ease: MOTION.panelEase,
+        });
+      },
+    });
+  }
+
+  return () => {
+    cleanups.forEach((fn) => fn());
+    enterTrigger?.kill();
+  };
+}
+
 export const servicesMotion = createPageMotion((root) => {
   const scroller = getScrollRoot(root);
   const teardownCatalog = initServicesCatalog(root, scroller);
@@ -120,38 +187,14 @@ export const servicesMotion = createPageMotion((root) => {
     );
   }
 
-  const processSteps = [...root.querySelectorAll<HTMLElement>(".services-process__step")];
-  const processTriggers: ScrollTrigger[] = [];
-
-  if (!prefersReducedMotion()) {
-    gsap.set(processSteps, { autoAlpha: 0, y: 24 });
-    processSteps.forEach((step, i) => {
-      processTriggers.push(
-        ScrollTrigger.create({
-          trigger: step,
-          scroller,
-          start: "top 88%",
-          once: true,
-          onEnter: () => {
-            gsap.to(step, {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.75,
-              delay: i * 0.08,
-              ease: MOTION.panelEase,
-            });
-          },
-        }),
-      );
-    });
-  }
+  const teardownProcess = initProcessStepper(root, scroller);
 
   requestAnimationFrame(() => ScrollTrigger.refresh());
 
   return () => {
     teardownCatalog();
+    teardownProcess();
     heroTween?.scrollTrigger?.kill();
     heroTween?.kill();
-    processTriggers.forEach((t) => t.kill());
   };
 });

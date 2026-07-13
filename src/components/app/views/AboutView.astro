@@ -100,20 +100,24 @@ import {
       <h2 class="text-2xl font-black md:text-3xl">Our Future Plans</h2>
     </div>
 
-    <div data-about-plans-grid class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+    <div data-about-plans-grid class="about-plans grid grid-cols-2 gap-4 md:gap-5 lg:grid-cols-4">
       {
         aboutFuturePlans.map((plan) => (
           <article
             data-about-plan
-            class="inner-card inner-card--interactive inner-card--sm"
+            class="flip-card focus-ring"
+            tabindex="0"
+            aria-label={plan.title}
           >
-            <div class="mb-4 flex items-center gap-3">
-              <span class="flex h-8 min-w-8 items-center justify-center rounded-lg bg-accent px-2 text-xs font-bold tabular-nums text-white">
-                {plan.number}
-              </span>
-              <h3 class="text-sm font-bold md:text-base">{plan.title}</h3>
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-card__num">{plan.number}</span>
+                <h3 class="flip-card__title">{plan.title}</h3>
+              </div>
+              <div class="flip-card-back">
+                <p class="flip-card__desc">{plan.description}</p>
+              </div>
             </div>
-            <p class="text-sm leading-relaxed text-white/75">{plan.description}</p>
           </article>
         ))
       }

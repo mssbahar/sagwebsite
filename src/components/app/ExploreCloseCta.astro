@@ -2,13 +2,16 @@
 import { X, ChevronLeft } from "@lucide/astro";
 ---
 
-<div id="explore-close-wrap" class="explore-close-wrap explore-close-wrap--landing fixed bottom-8 left-1/2 z-[60] -translate-x-1/2 md:bottom-10">
+<div
+  id="explore-close-wrap"
+  class="explore-close-wrap explore-close-wrap--landing fixed inset-x-0 bottom-0 z-[60] flex w-full justify-stretch md:inset-x-auto md:bottom-10 md:left-1/2 md:w-auto md:-translate-x-1/2"
+>
   <button
     type="button"
     data-explore-close
     data-action-button
     data-state="explore"
-    class="action-btn group focus-ring text-base shadow-lg shadow-black/30"
+    class="action-btn group w-full focus-ring text-base shadow-lg shadow-black/30 md:w-auto"
     aria-label="Explore dashboard"
   >
     <span class="action-btn-stack">
