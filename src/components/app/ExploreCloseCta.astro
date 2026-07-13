@@ -1,0 +1,38 @@
+---
+import { X, ChevronLeft } from "@lucide/astro";
+---
+
+<div id="explore-close-wrap" class="explore-close-wrap explore-close-wrap--landing fixed bottom-8 left-1/2 z-[60] -translate-x-1/2 md:bottom-10">
+  <button
+    type="button"
+    data-explore-close
+    data-action-button
+    data-state="explore"
+    class="action-btn group focus-ring text-base shadow-lg shadow-black/30"
+    aria-label="Explore dashboard"
+  >
+    <span class="action-btn-stack">
+      <span data-explore-open data-action="explore" class="action-btn-row">
+        <span>Explore</span>
+        <span class="action-btn-divider" aria-hidden="true"></span>
+        <span class="relative top-[1px] w-6" aria-hidden="true">
+          <span class="block h-[2px] w-5 rounded-full bg-current"></span>
+          <span class="mt-[3px] block h-[2px] w-5 rounded-full bg-current"></span>
+          <span class="mt-[3px] block h-[2px] w-5 rounded-full bg-current"></span>
+        </span>
+      </span>
+
+      <span data-explore-close-label data-action="close" class="action-btn-row absolute left-0 top-0">
+        <span>Close</span>
+        <span class="action-btn-divider" aria-hidden="true"></span>
+        <span class="relative top-[1px] w-6" aria-hidden="true"><X size={16} /></span>
+      </span>
+
+      <span data-explore-back-label data-action="back" class="action-btn-row absolute left-0 top-0">
+        <span class="relative top-[1px] text-[80%]"><ChevronLeft size={16} /></span>
+        <span class="action-btn-divider" aria-hidden="true"></span>
+        <span>Back to Dashboard</span>
+      </span>
+    </span>
+  </button>
+</div>

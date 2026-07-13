@@ -1,0 +1,101 @@
+---
+import { Star, ChevronLeft, ChevronRight } from "@lucide/astro";
+import InnerPage from "../InnerPage.astro";
+import CtaBanner from "../CtaBanner.astro";
+import PinkDot from "../PinkDot.astro";
+import { testimonials } from "../../../data/testimonials";
+import { reviewsTrust } from "../../../data/reviews";
+---
+
+<InnerPage view="reviews">
+  <section class="reviews-showcase pb-6" data-reviews-carousel>
+    <div class="reviews-showcase__layout reveal">
+      <div class="reviews-showcase__aside">
+        <div class="mb-5 flex items-center gap-3">
+          <PinkDot icon="Star" />
+          <p class="text-xs uppercase tracking-[0.22em] text-white/75">{reviewsTrust.eyebrow}</p>
+        </div>
+
+        <h1 class="reviews-showcase__headline text-shine">
+          {reviewsTrust.headlineBefore}
+          <span class="text-accent">{reviewsTrust.headlineAccent}</span>
+        </h1>
+
+        <p class="reviews-showcase__description">{reviewsTrust.description}</p>
+
+        <div class="reviews-showcase__controls">
+          <button
+            type="button"
+            data-carousel-prev
+            class="reviews-showcase__nav focus-ring"
+            aria-label="Previous review"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <button
+            type="button"
+            data-carousel-next
+            class="reviews-showcase__nav focus-ring"
+            aria-label="Next review"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      </div>
+
+      <!-- Review card -->
+      <div class="reviews-showcase__card-wrap">
+        <div class="reviews-showcase__card bento-premium">
+          <div data-carousel-viewport class="reviews-showcase__viewport">
+            {
+              testimonials.map((t, i) => (
+                <article
+                  data-carousel-slide
+                  class:list={["reviews-showcase__slide", i === 0 && "is-active"]}
+                >
+                  <header class="reviews-showcase__author">
+                    <img
+                      src={t.avatar}
+                      alt=""
+                      class="reviews-showcase__avatar"
+                      width="48"
+                      height="48"
+                      loading="lazy"
+                    />
+                    <div class="reviews-showcase__author-meta">
+                      <span class="reviews-showcase__name">{t.name}</span>
+                      <span class="reviews-showcase__source">{t.role}</span>
+                    </div>
+                  </header>
+
+                  <div class="reviews-showcase__rating">
+                    <div data-review-stars class="reviews-showcase__stars" aria-label="5 out of 5 stars">
+                      {Array.from({ length: 5 }).map(() => <Star size={14} class="fill-accent" />)}
+                    </div>
+                    <span class="reviews-showcase__time">{t.timeAgo}</span>
+                  </div>
+
+                  <p class="reviews-showcase__quote">{t.quote}</p>
+
+                  {
+                    t.photos && (
+                      <div class="reviews-showcase__photos">
+                        {t.photos.map((src) => (
+                          <img src={src} alt="" class="reviews-showcase__photo" loading="lazy" />
+                        ))}
+                      </div>
+                    )
+                  }
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="reveal w-full pb-10">
+    <CtaBanner heading="Join thousands of<br />happy drivers." bgImg="/images/branches/branch-06.jpg" />
+  </div>
+</InnerPage>

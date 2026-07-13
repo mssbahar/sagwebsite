@@ -1,0 +1,71 @@
+---
+import { ArrowUpRight } from "@lucide/astro";
+import AudioToggle from "./AudioToggle.astro";
+import CtaButton from "./CtaButton.astro";
+import { site } from "../../data/site";
+---
+
+<section data-view="landing" data-scroll="false" class="view bg-black">
+  <div class="relative h-full w-full overflow-hidden">
+    <div class="viewport-frame pointer-events-none absolute inset-3 z-30 border border-accent/20 md:inset-4" aria-hidden="true"></div>
+    <video
+      class="absolute inset-0 h-full w-full object-cover scale-[1.04]"
+      autoplay
+      muted
+      loop
+      playsinline
+    >
+      <source src="/video/hero.mp4" type="video/mp4" />
+    </video>
+    <!-- Overlays for legible centered text -->
+    <div class="absolute inset-0 bg-black/30"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70"></div>
+
+    <!-- Top bar — floating glass card on mobile (363-style) -->
+    <div class="landing-header absolute inset-x-3 top-3 z-20 flex items-center justify-between rounded-2xl border border-white/10 bg-black/45 px-4 py-3 backdrop-blur-md md:inset-x-0 md:top-0 md:rounded-none md:border-0 md:bg-transparent md:px-10 md:py-10 md:backdrop-blur-none lg:pr-16">
+      <img
+        src="/images/herovisual.png"
+        alt="Smart Autocare Garage"
+        class="hero-item h-9 w-auto object-contain md:h-12"
+      />
+      <div class="hero-item flex items-center gap-3 md:gap-4">
+        <AudioToggle class="flex items-center justify-center text-white/90 transition-colors hover:text-accent" />
+        <CtaButton href={site.whatsappUrl} external class="text-sm text-white/90">
+          <span class="hidden sm:inline">Book Now</span>
+          <span class="sm:hidden">Book</span>
+          <ArrowUpRight />
+        </CtaButton>
+      </div>
+    </div>
+
+    <!-- Centered hero -->
+    <div class="absolute inset-0 z-10 flex translate-y-2 flex-col items-center justify-center px-5 pb-24 text-center sm:translate-y-4 sm:px-6 md:translate-y-6 md:pb-0">
+      <p class="hero-item mb-6 text-[11px] font-semibold uppercase tracking-[0.34em] text-white/75 md:text-xs">
+        {site.name}
+      </p>
+      <h1
+        class="text-shine is-storm hero-item mb-5 max-w-4xl text-[clamp(2.15rem,9vw,3rem)] font-black leading-[1.03] tracking-tight drop-shadow-[0_2px_18px_rgba(0,0,0,0.55)] md:mb-6 md:text-7xl"
+      >
+        Where expertise<br />meets your vehicle
+      </h1>
+      <p class="hero-item max-w-md text-sm leading-relaxed text-white/75 md:text-base">
+        Professional care, on-demand service and trusted automotive solutions. SAG puts your vehicle in expert hands.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const video = document.querySelector<HTMLVideoElement>('[data-view="landing"] video');
+  if (video) {
+    video.addEventListener("error", () => video.style.setProperty("display", "none"));
+    video.play?.().catch(() => {
+      /* poster remains visible as fallback */
+    });
+  }
+
+  // Drop the one-shot "storm" class after it finishes so it doesn't replay on hover.
+  document.querySelectorAll<HTMLElement>(".text-shine.is-storm").forEach((el) => {
+    el.addEventListener("animationend", () => el.classList.remove("is-storm"), { once: true });
+  });
+</script>

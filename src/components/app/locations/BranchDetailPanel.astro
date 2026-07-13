@@ -1,0 +1,49 @@
+---
+import { ExternalLink } from "@lucide/astro";
+import type { Branch } from "../../../data/branches";
+
+interface Props {
+  initial: Branch;
+}
+
+const { initial } = Astro.props;
+---
+
+<aside
+  data-branch-panel
+  class="inner-card"
+  aria-live="polite"
+>
+  <span class="sr-only" data-branch-live>Showing {initial.name} branch details</span>
+
+  <div class="mb-4 overflow-hidden rounded-xl">
+    <img
+      data-branch-image
+      src={initial.image}
+      alt={`${initial.name} branch`}
+      class="aspect-[16/10] w-full object-cover"
+      loading="lazy"
+    />
+  </div>
+
+  <div class="mb-2 flex items-center justify-between gap-2">
+    <h2 data-branch-name class="text-xl font-black">{initial.name}</h2>
+    <span data-branch-region class="text-[10px] uppercase tracking-[0.2em] text-accent">{initial.region}</span>
+  </div>
+
+  <p data-branch-address class="mb-3 text-sm leading-relaxed text-white/80">{initial.address}</p>
+  <p data-branch-hours class="mb-1 text-sm text-white/75">{initial.hours}</p>
+  <p data-branch-phone class="mb-4 text-sm font-medium text-white">{initial.phone}</p>
+
+  <a
+    data-branch-maps
+    href={initial.mapsUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="inline-flex items-center gap-1.5 text-sm text-accent transition hover:underline focus-ring rounded"
+    hidden={initial.mapsUrl === "#"}
+  >
+    View on Google Maps
+    <ExternalLink size={13} />
+  </a>
+</aside>

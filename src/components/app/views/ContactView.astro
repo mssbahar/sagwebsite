@@ -1,0 +1,148 @@
+---
+import InnerPage from "../InnerPage.astro";
+import PinkDot from "../PinkDot.astro";
+import SocialIcon from "../SocialIcon.astro";
+import CtaButton from "../CtaButton.astro";
+import { ChevronDown, ExternalLink } from "@lucide/astro";
+import { site } from "../../../data/site";
+import { socialLinks } from "../../../data/social";
+import { contactHero, hqContact } from "../../../data/contact";
+import { mapBranches, branchPayload } from "../../../data/branches";
+
+const contactCards = [
+  { icon: "Phone", label: "Call / WhatsApp", key: "phone" as const },
+  { icon: "Mail", label: "Email", key: "email" as const },
+  { icon: "Clock", label: "Operating Hours", key: "hours" as const },
+];
+---
+
+<InnerPage view="contact">
+  <section class="contact-hero reveal mb-10 border-b border-white/10 pb-10">
+    <div class="mb-5 flex items-center gap-3">
+      <PinkDot icon="Phone" />
+      <p class="text-xs uppercase tracking-[0.22em] text-white/75">{contactHero.eyebrow}</p>
+    </div>
+    <h1 class="text-shine mb-4 text-4xl font-black leading-[1.02] tracking-tight md:text-5xl lg:text-[3.25rem]">
+      {contactHero.headline}
+    </h1>
+    <p class="max-w-2xl text-sm leading-relaxed text-white/75 md:text-base">{contactHero.intro}</p>
+  </section>
+
+  <div class="contact-layout reveal" data-hq-contact={JSON.stringify(hqContact)}>
+    <div class="contact-main">
+      <div class="contact-branch-picker inner-card bento-premium mb-6">
+        <label class="contact-branch-picker__label" for="contact-branch-select">
+          <PinkDot icon="MapPin" />
+          <span>Select a branch</span>
+        </label>
+        <div class="contact-branch-picker__select-wrap">
+          <select
+            id="contact-branch-select"
+            data-branch-picker
+            class="contact-branch-picker__select focus-ring"
+          >
+            <option value="hq" selected>
+              Headquarters — Subang Jaya
+            </option>
+            {
+              mapBranches.map((b) => (
+                <option value={b.id} data-branch={branchPayload(b)}>
+                  {b.name} ({b.region})
+                </option>
+              ))
+            }
+          </select>
+          <ChevronDown size={16} class="contact-branch-picker__chevron" aria-hidden="true" />
+        </div>
+
+        <div data-branch-details class="contact-branch-details">
+          <h2 data-branch-name class="contact-branch-details__name">{hqContact.name}</h2>
+          <p data-branch-address class="contact-branch-details__row">{hqContact.address}</p>
+          <p data-branch-hours class="contact-branch-details__row">{hqContact.hours}</p>
+          <p class="contact-branch-details__row">
+            <a data-branch-phone href={`tel:${hqContact.phone.replace(/\s/g, "")}`} class="hover:text-accent focus-ring rounded">
+              {hqContact.phone}
+            </a>
+          </p>
+          <a
+            data-branch-maps
+            href={hqContact.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-branch-details__maps focus-ring"
+          >
+            View on Google Maps
+            <ExternalLink size={13} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+
+      <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {
+          contactCards.map((c) => (
+            <div data-contact-card class="contact-card inner-card">
+              <div class="mb-4">
+                <PinkDot icon={c.icon} />
+              </div>
+              <p class="mb-1 text-[10px] uppercase tracking-[0.2em] text-white/75">{c.label}</p>
+              {c.key === "phone" ? (
+                <a
+                  data-contact-phone
+                  href={`tel:${hqContact.phone.replace(/\s/g, "")}`}
+                  class="text-sm font-medium text-white transition hover:text-accent focus-ring rounded"
+                >
+                  {hqContact.phone}
+                </a>
+              ) : c.key === "email" ? (
+                <a
+                  data-contact-email
+                  href={`mailto:${hqContact.email}`}
+                  class="text-sm font-medium text-white transition hover:text-accent focus-ring rounded"
+                >
+                  {hqContact.email}
+                </a>
+              ) : (
+                <p data-contact-hours class="text-sm font-medium text-white">{hqContact.hours}</p>
+              )}
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="contact-whatsapp relative overflow-hidden rounded-2xl border border-white/10">
+        <div data-contact-cta-bg class="absolute inset-0 bg-cover bg-center" style="background-image:url(/images/branches/branch-01.jpg)"></div>
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/50"></div>
+        <div class="relative z-10 flex flex-col items-start gap-6 p-8 md:flex-row md:items-center md:justify-between md:p-10">
+          <div>
+            <h2 class="mb-2 text-2xl font-black md:text-3xl">Book on WhatsApp</h2>
+            <p class="max-w-md text-sm leading-relaxed text-white/85">
+              Fastest way to reach us — send your car details, branch preference and time slot.
+            </p>
+          </div>
+          <CtaButton href={site.whatsappUrl} external variant="solid" class="shrink-0 text-sm shadow-lg shadow-black/30">
+            Chat Now
+          </CtaButton>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reveal mt-10 flex items-center gap-4 pb-10">
+    <span class="text-xs uppercase tracking-[0.2em] text-white/75">Follow</span>
+    <div class="flex gap-3">
+      {
+        socialLinks.map((s) => (
+          <a
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={s.label}
+            class="contact-social focus-ring"
+          >
+            <SocialIcon name={s.icon} size={16} />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</InnerPage>

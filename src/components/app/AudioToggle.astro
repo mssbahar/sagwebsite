@@ -1,0 +1,32 @@
+---
+interface Props {
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { class: className = "", ...attrs } = Astro.props;
+---
+
+<button
+  type="button"
+  data-audio-toggle
+  aria-pressed="false"
+  aria-label="Play background music"
+  class:list={["audio-toggle", "focus-ring", className]}
+  {...attrs}
+>
+  <svg
+    width="22"
+    height="16"
+    viewBox="0 0 22 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    class="audio-eq"
+  >
+    <rect class="audio-eq-bar" x="1" y="5" width="3" height="6" rx="0.5" fill="currentColor" />
+    <rect class="audio-eq-bar" x="7" y="2" width="3" height="12" rx="0.5" fill="currentColor" />
+    <rect class="audio-eq-bar" x="13" y="4" width="3" height="8" rx="0.5" fill="currentColor" />
+    <rect class="audio-eq-bar" x="19" y="1" width="3" height="14" rx="0.5" fill="currentColor" />
+  </svg>
+</button>

@@ -1,0 +1,67 @@
+---
+import SocialIcon from "./SocialIcon.astro";
+import AudioToggle from "./AudioToggle.astro";
+import { socialLinks } from "../../data/social";
+
+interface Props {
+  view: string;
+}
+
+const { view } = Astro.props;
+
+const socialTile =
+  "flex h-10 w-10 items-center justify-center text-white/80 transition-colors hover:text-accent focus-ring sm:h-11 sm:w-11";
+
+const socialOrder = ["instagram", "facebook", "tiktok"] as const;
+const orderedSocialLinks = socialOrder
+  .map((icon) => socialLinks.find((s) => s.icon === icon))
+  .filter((link): link is NonNullable<typeof link> => Boolean(link));
+---
+
+<section data-view={view} class="view overflow-hidden">
+  <div class="absolute inset-0 p-1.5 sm:p-3 md:p-4">
+    <div data-inner-panel class="relative flex h-full min-h-0 flex-col">
+      <div
+        data-scroll-root
+        data-lenis-prevent
+        class="inner-page-panel relative min-h-0 flex-1 overflow-y-auto rounded-xl border border-white/10 glass text-white sm:rounded-2xl"
+      >
+        <nav class="inner-page-nav sticky top-0 z-20 flex items-center justify-between px-3 py-2 sm:px-4 sm:py-2.5 md:px-5 md:py-3">
+          <button
+            type="button"
+            data-nav-to="dashboard"
+            class="flex h-11 w-11 items-center justify-center rounded-md text-white/80 transition-colors hover:text-accent focus-ring sm:h-12 sm:w-12"
+            aria-label="Back to dashboard"
+          >
+            <img src="/images/logo-primary.png" alt="SAG" class="h-full w-full object-contain" />
+          </button>
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <AudioToggle class={socialTile} />
+            {
+              orderedSocialLinks.map((link) => (
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                  class={socialTile}
+                >
+                  <SocialIcon name={link.icon} size={18} />
+                </a>
+              ))
+            }
+          </div>
+        </nav>
+
+        <div class="inner-page-content px-3 pb-[calc(4.5rem+env(safe-area-inset-bottom))] pt-1 sm:px-5 md:px-6 md:pb-28">
+          <slot />
+        </div>
+      </div>
+
+      <div
+        data-inner-close-anchor
+        class="inner-page-cta-anchor pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center px-0 pb-0 pt-0 md:px-4 md:pb-5 md:pt-2"
+      ></div>
+    </div>
+  </div>
+</section>

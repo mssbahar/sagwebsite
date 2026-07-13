@@ -1,0 +1,37 @@
+---
+interface Props {
+  href?: string;
+  navTo?: string;
+  external?: boolean;
+  type?: "button" | "submit";
+  class?: string;
+  label?: string;
+  variant?: "link" | "solid";
+}
+
+const {
+  href,
+  navTo,
+  external = false,
+  type = "button",
+  class: className = "",
+  label,
+  variant = "link",
+} = Astro.props;
+const Tag = href ? "a" : "button";
+const isSolid = variant === "solid";
+---
+
+<Tag
+  class:list={[isSolid ? "action-btn" : "cta-btn", "focus-ring", className]}
+  href={href}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+  data-nav-to={navTo}
+  type={href ? undefined : type}
+  aria-label={label}
+>
+  <span class:list={[isSolid ? "inline-flex items-center gap-2 whitespace-nowrap" : "cta-btn-inner"]}>
+    <slot />
+  </span>
+</Tag>

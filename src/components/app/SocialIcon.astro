@@ -1,0 +1,33 @@
+---
+interface Props {
+  name: "instagram" | "facebook" | "tiktok";
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 16, class: className } = Astro.props;
+---
+
+{
+  name === "instagram" && (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class={className} aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  )
+}
+{
+  name === "facebook" && (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" class={className} aria-hidden="true">
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  )
+}
+{
+  name === "tiktok" && (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" class={className} aria-hidden="true">
+      <path d="M16 2h-3v13.5a2.5 2.5 0 1 1-2.5-2.5c.28 0 .55.05.8.13V10.1A5.5 5.5 0 1 0 15 15.5V8.6a7 7 0 0 0 4 1.27V6.87A4 4 0 0 1 16 2z" />
+    </svg>
+  )
+}
