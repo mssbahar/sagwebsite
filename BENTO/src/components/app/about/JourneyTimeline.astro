@@ -1,0 +1,48 @@
+---
+import type { AboutTimelineItem } from "../../../data/about";
+
+interface Props {
+  items: AboutTimelineItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<div data-journey-timeline class="about-journey">
+  <div data-journey-line class="about-journey__line" aria-hidden="true"></div>
+
+  <ol class="about-journey__list">
+    {
+      items.map((item, i) => {
+        const side = i % 2 === 0 ? "left" : "right";
+
+        return (
+          <li
+            data-journey-item
+            data-journey-side={side}
+            class:list={["about-journey__item", side === "left" ? "is-left" : "is-right"]}
+          >
+            <span class="about-journey__node" aria-hidden="true"></span>
+
+            <article data-journey-card class="about-journey__card">
+              <div class="about-journey__body">
+                <h3 class="about-journey__title">{item.title}</h3>
+                <p class="about-journey__desc">{item.description}</p>
+              </div>
+
+              <div class="about-journey__date" aria-label={`${item.month ?? ""} ${item.day ?? ""} ${item.year}`.trim()}>
+                {item.month && <span class="about-journey__month">{item.month}</span>}
+                {item.day ? (
+                  <span class="about-journey__day">{item.day}</span>
+                ) : (
+                  <span class="about-journey__day about-journey__day--year">{item.year}</span>
+                )}
+                {item.day && <span class="about-journey__year">{item.year}</span>}
+              </div>
+            </article>
+          </li>
+        );
+      })
+    }
+  </ol>
+</div>

@@ -1,0 +1,50 @@
+---
+import InnerPage from "../InnerPage.astro";
+import CtaBanner from "../CtaBanner.astro";
+import PinkDot from "../PinkDot.astro";
+import { promotions, promotionsCta, promotionsHero } from "../../../data/promotions";
+---
+
+<InnerPage view="promotions">
+  <section class="promotions-hero reveal mb-10 border-b border-white/10 pb-10">
+    <div class="mb-5 flex items-center gap-3">
+      <PinkDot icon="Tag" />
+      <p class="text-xs uppercase tracking-[0.22em] text-white/75">{promotionsHero.eyebrow}</p>
+    </div>
+    <h1 class="text-shine mb-4 text-4xl font-black leading-[1.02] tracking-tight md:text-5xl lg:text-[3.25rem]">
+      {promotionsHero.headline}
+    </h1>
+    <p class="max-w-2xl text-sm leading-relaxed text-white/75 md:text-base">{promotionsHero.intro}</p>
+  </section>
+
+  <section class="promotions-grid mb-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-5">
+    {
+      promotions.map((promo) => (
+        <article data-promo-card class="inner-card bento-premium flex flex-col gap-4 p-6 md:p-7">
+          <div class="flex items-start justify-between gap-3">
+            <PinkDot icon="Percent" />
+            {promo.badge && (
+              <span class="rounded-md bg-accent/20 px-2 py-1 text-[10px] font-semibold tracking-wide text-accent uppercase">
+                {promo.badge}
+              </span>
+            )}
+          </div>
+          <div class="flex flex-1 flex-col gap-2">
+            <h2 class="text-xl font-black tracking-tight text-white md:text-2xl">{promo.title}</h2>
+            <p class="text-sm leading-relaxed text-white/75">{promo.blurb}</p>
+          </div>
+          <p class="border-t border-white/10 pt-4 text-[10px] tracking-[0.18em] text-white/55 uppercase">
+            {promo.validity}
+          </p>
+        </article>
+      ))
+    }
+  </section>
+
+  <CtaBanner
+    class="reveal mb-6"
+    heading={promotionsCta.heading}
+    cta={promotionsCta.cta}
+    bgImg={promotionsCta.bgImg}
+  />
+</InnerPage>

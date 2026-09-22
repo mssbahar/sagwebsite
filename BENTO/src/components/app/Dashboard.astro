@@ -1,0 +1,364 @@
+---
+import { ArrowUpRight, ChevronLeft, ChevronRight, Star } from "@lucide/astro";
+import AudioToggle from "./AudioToggle.astro";
+import PinkDot from "./PinkDot.astro";
+import SocialIcon from "./SocialIcon.astro";
+import { site } from "../../data/site";
+import { socialLinks } from "../../data/social";
+import { dashboardHero } from "../../data/trust";
+import { facilities } from "../../data/facilities";
+
+const firstFacility = facilities[0];
+const lastFacility = facilities[facilities.length - 1];
+const facilitySlides =
+  firstFacility && lastFacility
+    ? [lastFacility, ...facilities, firstFacility]
+    : facilities;
+
+const ig = socialLinks.find((s) => s.icon === "instagram")?.href ?? "#";
+const fb = socialLinks.find((s) => s.icon === "facebook")?.href ?? "#";
+const tt = socialLinks.find((s) => s.icon === "tiktok")?.href ?? "#";
+
+const tile =
+  "group bento-tile min-h-0 min-w-0 overflow-hidden rounded-xl bg-surface text-left text-white bento-premium focus-ring cursor-pointer";
+const socialSq =
+  `${tile} dashboard-bento__social-sq flex items-center justify-center text-white/85 transition-colors hover:text-accent`;
+const overlay = "absolute inset-0 bg-gradient-to-t from-black/88 via-black/45 to-black/25";
+const heroOverlay = "dashboard-bento__hero-overlay absolute inset-0";
+---
+
+<section data-view="dashboard" class="view overflow-hidden">
+  <div class="absolute inset-0 flex flex-col">
+    <div data-dashboard-panel class="relative z-10 flex min-h-0 flex-1 flex-col">
+      <!--
+        363 cutout: logo sits inside the hero rectangle (~1/8),
+        with a black gutter cut between logo and the L-shaped photo.
+      -->
+      <div
+        data-lenis-prevent
+        class="dashboard-bento min-h-0 flex-1 overflow-y-auto md:overflow-hidden"
+      >
+        <div class="dashboard-bento__hero-stage">
+          <button
+            type="button"
+            data-nav-to="landing"
+            data-dashboard-tile
+            aria-label="Back to home"
+            class={`dashboard-bento__logo ${tile} flex items-center justify-center p-2.5 md:p-3`}
+          >
+            <img
+              src="/images/logo-primary.png"
+              alt="SAG"
+              class="h-9 w-9 object-contain md:h-11 md:w-11"
+            />
+          </button>
+
+          <button
+            type="button"
+            data-nav-to="about"
+            data-tile-nav
+            data-dashboard-tile
+            aria-label="What your car gets at SAG"
+            class={`dashboard-bento__hero ${tile}`}
+          >
+            <div
+              data-tile-image
+              class="absolute inset-0 bg-cover bg-center"
+              style="background-image:url(/images/branches/branch-02.jpg)"
+            >
+            </div>
+            <div data-tile-overlay class={heroOverlay}></div>
+            <div class="dashboard-bento__hero-copy relative z-[1]">
+              <h2 class="dashboard-tile--hero__title font-black leading-[0.95] tracking-tight text-white">
+                <span class="dashboard-bento__hero-kicker">{dashboardHero.titleLine1}</span>
+                <span class="dashboard-bento__hero-line">
+                  <span class="text-accent">{dashboardHero.titleAccent}</span>
+                  {" "}{dashboardHero.titleLine2}
+                </span>
+              </h2>
+              <p class="dashboard-bento__hero-body">
+                {dashboardHero.body}
+              </p>
+              <span class="dashboard-bento__hero-arrow" aria-hidden="true">
+                <ArrowUpRight size={26} stroke-width={2} />
+              </span>
+            </div>
+          </button>
+        </div>
+
+        <!-- CENTER: feature pair -->
+        <div class="dashboard-bento__features">
+          <button
+            type="button"
+            data-nav-to="services"
+            data-tile-nav
+            data-dashboard-tile
+            aria-label="Our Services"
+            class={`dashboard-bento__feature ${tile}`}
+          >
+            <div
+              data-tile-image
+              class="absolute inset-0 bg-cover bg-center"
+              style="background-image:url(/images/branches/branch-05.jpg)"
+            >
+            </div>
+            <div data-tile-overlay class={overlay}></div>
+            <div class="dashboard-bento__feature-copy relative z-[1]">
+              <div class="dashboard-bento__feature-top">
+                <div>
+                  <h3 class="dashboard-bento__feature-title">
+                    Our<br />Services
+                  </h3>
+                  <p class="dashboard-bento__feature-desc">Keep your car healthy — service &amp; repair.</p>
+                </div>
+                <PinkDot icon="Wrench" lg tone="pink" />
+              </div>
+              <span class="dashboard-bento__feature-arrow" aria-hidden="true">
+                <ArrowUpRight size={18} stroke-width={2.25} />
+              </span>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            data-nav-to="locations"
+            data-tile-nav
+            data-dashboard-tile
+            aria-label="Our Branches"
+            class={`dashboard-bento__feature ${tile}`}
+          >
+            <div
+              data-tile-image
+              class="absolute inset-0 bg-cover bg-center"
+              style="background-image:url(/images/branches/branch-07.jpg)"
+            >
+            </div>
+            <div data-tile-overlay class={overlay}></div>
+            <div class="dashboard-bento__feature-copy relative z-[1]">
+              <div class="dashboard-bento__feature-top">
+                <div>
+                  <h3 class="dashboard-bento__feature-title">
+                    Our<br />Branches
+                  </h3>
+                  <p class="dashboard-bento__feature-desc">Drop off near home or the office.</p>
+                </div>
+                <PinkDot icon="MapPin" lg tone="pink" />
+              </div>
+              <span class="dashboard-bento__feature-arrow" aria-hidden="true">
+                <ArrowUpRight size={18} stroke-width={2.25} />
+              </span>
+            </div>
+          </button>
+        </div>
+
+        <!-- RIGHT: social / audio / book now -->
+        <div class="dashboard-bento__social">
+          <a
+            href={ig}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-dashboard-tile
+            aria-label="Instagram"
+            class={socialSq}
+          >
+            <SocialIcon name="instagram" size={20} />
+          </a>
+          <a
+            href={fb}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-dashboard-tile
+            aria-label="Facebook"
+            class={socialSq}
+          >
+            <SocialIcon name="facebook" size={20} />
+          </a>
+          <a
+            href={tt}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-dashboard-tile
+            aria-label="TikTok"
+            class={socialSq}
+          >
+            <SocialIcon name="tiktok" size={20} />
+          </a>
+          <AudioToggle data-dashboard-tile class={socialSq} />
+          <a
+            href={site.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-dashboard-tile
+            aria-label="Book Now"
+            class={`dashboard-bento__social-app ${tile} flex items-center justify-center px-2 text-center text-[0.65rem] font-bold tracking-wide text-white uppercase transition-colors hover:text-accent sm:text-xs`}
+          >
+            Book Now
+          </a>
+        </div>
+
+        <!-- RIGHT: featured workshop gallery -->
+        <div
+          data-facility-gallery
+          data-dashboard-tile
+          class={`dashboard-bento__featured ${tile}`}
+        >
+          <button
+            type="button"
+            data-nav-to="workshop"
+            data-tile-nav
+            class="facility-gallery__open"
+            aria-label="Workshop Facilities"
+          >
+            <div class="facility-gallery" aria-hidden="true">
+              <div class="facility-gallery__viewport" data-facility-viewport>
+                <div class="facility-gallery__track" data-facility-track>
+                  {
+                    facilitySlides.map((item) => (
+                      <div class="facility-gallery__slide" data-facility-slide>
+                        <div
+                          class="facility-gallery__image"
+                          style={`background-image:url(${item.image})`}
+                        />
+                        <div class="facility-gallery__veil" />
+                        <p class="facility-gallery__name">
+                          <span>{item.no}</span>
+                          {item.title}
+                        </p>
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="facility-gallery__chrome">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <p class="text-xs font-medium tracking-wide text-white/70 uppercase">Featured</p>
+                  <h3 class="mt-1 text-2xl font-black leading-tight tracking-tight sm:text-3xl">
+                    Workshop Facilities
+                  </h3>
+                  <p class="mt-1 max-w-[16rem] text-sm text-white/80">
+                    Equipment and care that protect your vehicle.
+                  </p>
+                </div>
+                <span
+                  class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white"
+                  aria-hidden="true"
+                >
+                  <Star size={16} stroke-width={2.25} />
+                </span>
+              </div>
+            </div>
+          </button>
+          <div class="facility-gallery__controls">
+            <button
+              type="button"
+              data-facility-prev
+              class="facility-gallery__nav focus-ring"
+              aria-label="Previous facility"
+            >
+              <ChevronLeft size={16} stroke-width={2.4} />
+            </button>
+            <button
+              type="button"
+              data-facility-next
+              class="facility-gallery__nav focus-ring"
+              aria-label="Next facility"
+            >
+              <ChevronRight size={16} stroke-width={2.4} />
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT: actions — Promotions + Reviews + Contact -->
+        <div class="dashboard-bento__actions">
+          <button
+            type="button"
+            data-nav-to="promotions"
+            data-tile-nav
+            data-dashboard-tile
+            aria-label="Promotions"
+            class={`dashboard-bento__action ${tile}`}
+          >
+            <div
+              data-tile-image
+              class="absolute inset-0 bg-cover bg-center"
+              style="background-image:url(/images/branches/branch-09.jpg)"
+            >
+            </div>
+            <div data-tile-overlay class={overlay}></div>
+            <div class="dashboard-bento__action-copy">
+              <div class="dashboard-bento__action-stack">
+                <PinkDot icon="Tag" tone="pink" />
+                <h3 class="dashboard-bento__action-title">Promotions</h3>
+                <p class="dashboard-bento__action-desc">Current deals — save on your next service.</p>
+              </div>
+              <span class="dashboard-bento__action-arrow" aria-hidden="true">
+                <ArrowUpRight size={14} stroke-width={2.25} />
+              </span>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            data-nav-to="reviews"
+            data-tile-nav
+            data-dashboard-tile
+            aria-label="Customer Reviews"
+            class={`dashboard-bento__action ${tile}`}
+          >
+            <div
+              data-tile-image
+              class="absolute inset-0 bg-cover bg-center"
+              style="background-image:url(/images/branches/branch-10.jpg)"
+            >
+            </div>
+            <div data-tile-overlay class={overlay}></div>
+            <div class="dashboard-bento__action-copy">
+              <div class="dashboard-bento__action-stack">
+                <PinkDot icon="Star" tone="pink" />
+                <h3 class="dashboard-bento__action-title">Reviews</h3>
+                <p class="dashboard-bento__action-desc">Why drivers keep coming back.</p>
+              </div>
+              <span class="dashboard-bento__action-arrow" aria-hidden="true">
+                <ArrowUpRight size={14} stroke-width={2.25} />
+              </span>
+            </div>
+          </button>
+
+          <button
+            type="button"
+            data-nav-to="contact"
+            data-tile-nav
+            data-dashboard-tile
+            aria-label="Contact Us"
+            class={`dashboard-bento__action ${tile}`}
+          >
+            <div
+              data-tile-image
+              class="absolute inset-0 bg-cover bg-center"
+              style="background-image:url(/images/branches/branch-04.jpg)"
+            >
+            </div>
+            <div data-tile-overlay class={overlay}></div>
+            <div class="dashboard-bento__action-copy">
+              <div class="dashboard-bento__action-stack">
+                <PinkDot icon="Phone" tone="pink" />
+                <h3 class="dashboard-bento__action-title">Contact</h3>
+                <p class="dashboard-bento__action-desc">Call, WhatsApp, or visit a branch.</p>
+              </div>
+              <span class="dashboard-bento__action-arrow" aria-hidden="true">
+                <ArrowUpRight size={14} stroke-width={2.25} />
+              </span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      data-explore-close-anchor
+      class="dashboard-cta-anchor relative z-20 flex min-h-0 shrink-0 items-end justify-center px-0 pb-0 pt-0 md:px-3 md:pb-2 md:pt-0"
+    >
+    </div>
+  </div>
+</section>

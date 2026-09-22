@@ -1,0 +1,23 @@
+---
+import CtaButton from "./CtaButton.astro";
+import { site } from "../../data/site";
+
+interface Props {
+  heading: string;
+  cta?: string;
+  bgImg: string;
+  class?: string;
+}
+
+const { heading, cta = "Book a Service", bgImg, class: className = "" } = Astro.props;
+---
+
+<div class={`relative overflow-hidden rounded-2xl ${className}`}>
+  <div class="absolute inset-0 bg-cover bg-center" style={`background-image:url(${bgImg})`}></div>
+  <div class="relative z-10 flex flex-col items-start gap-6 p-8 md:flex-row md:items-center md:justify-between md:p-12">
+    <h2 class="text-3xl md:text-4xl font-black leading-tight flex-1 drop-shadow-[0_2px_14px_rgba(0,0,0,0.85)]" set:html={heading}></h2>
+    <CtaButton href={site.whatsappUrl} external variant="solid" class="self-center text-sm shrink-0 shadow-lg shadow-black/30 md:self-auto">
+      {cta}
+    </CtaButton>
+  </div>
+</div>

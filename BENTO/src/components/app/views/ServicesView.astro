@@ -1,0 +1,157 @@
+---
+import InnerPage from "../InnerPage.astro";
+import CtaBanner from "../CtaBanner.astro";
+import PinkDot from "../PinkDot.astro";
+import { ChevronDown } from "@lucide/astro";
+import { services, servicesHero, serviceProcess, servicesCta } from "../../../data/services";
+---
+
+<InnerPage view="services">
+  <!-- Split hero -->
+  <section class="services-hero mb-12 grid grid-cols-1 items-center gap-8 md:mb-16 md:grid-cols-2 md:gap-10 lg:gap-12">
+    <div class="reveal-image relative order-2 aspect-[4/3] overflow-hidden rounded-2xl border border-white/10 md:order-1 md:aspect-auto md:min-h-[20rem] lg:min-h-[24rem]">
+      <div
+        data-services-hero-img
+        class="absolute inset-0 scale-105 bg-cover bg-center"
+        style={`background-image:url(${servicesHero.image})`}
+        role="img"
+        aria-label={servicesHero.imageAlt}
+      ></div>
+      <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+    </div>
+
+    <div class="order-1 md:order-2">
+      <div class="reveal-fade mb-5 flex items-center gap-3">
+        <PinkDot icon="Wrench" />
+        <p class="text-xs uppercase tracking-[0.22em] text-white/75">{servicesHero.eyebrow}</p>
+      </div>
+      <h1 class="text-shine reveal mb-5 text-4xl font-black leading-[1.02] tracking-tight md:text-5xl lg:text-[3.25rem]">
+        {servicesHero.headline}
+      </h1>
+      <p class="reveal text-sm leading-relaxed text-white/75 md:text-base">{servicesHero.intro}</p>
+    </div>
+  </section>
+
+  <!-- Service catalog — accordion on mobile, sidebar + chapters on desktop -->
+  <section class="services-catalog border-t border-white/10 pt-10 md:pt-12">
+    <div class="reveal-fade mb-8 md:mb-10">
+      <p class="mb-2 text-[10px] uppercase tracking-[0.28em] text-accent">Service catalog</p>
+      <h2 class="text-2xl font-black md:text-3xl">What we do for your car</h2>
+    </div>
+
+    <div data-services-catalog class="services-catalog__layout services-catalog--accordion">
+      {
+        services.map((service, i) => (
+          <article
+            data-service-accordion
+            data-service-id={service.id}
+            class="service-accordion__item"
+          >
+            <button
+              type="button"
+              data-service-nav
+              data-service-target={service.id}
+              class:list={["service-accordion__trigger", i === 0 && "is-active"]}
+              aria-expanded={i === 0 ? "true" : "false"}
+              aria-controls={`service-panel-${service.id}`}
+            >
+              <span class="service-accordion__num">{String(i + 1).padStart(2, "0")}</span>
+              <span class="service-accordion__name">{service.title}</span>
+              <span class="service-accordion__chevron" aria-hidden="true">
+                <ChevronDown size={16} />
+              </span>
+            </button>
+
+            <div
+              id={`service-panel-${service.id}`}
+              data-service-chapter
+              data-service-panel
+              class:list={["service-accordion__panel", i === 0 && "is-open"]}
+              hidden={i !== 0}
+            >
+              <span class="service-chapter__watermark" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
+              <div class="service-chapter__visual">
+                <div
+                  data-service-chapter-img
+                  class="service-chapter__image"
+                  style={`background-image:url(${service.image})`}
+                  role="img"
+                  aria-label={service.title}
+                ></div>
+              </div>
+
+              <div class="service-chapter__copy">
+                <div class="mb-4 flex items-center gap-3">
+                  <PinkDot icon={service.icon} />
+                  <p class="text-[10px] uppercase tracking-[0.25em] text-white/55">
+                    Service {String(i + 1).padStart(2, "0")}
+                  </p>
+                </div>
+                <h3 class="service-chapter__title">{service.title}</h3>
+                <p class="service-chapter__tagline">{service.tagline}</p>
+                <p class="service-chapter__desc">{service.longDescription}</p>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- How it works — inline accordion steps -->
+  <section class="services-process border-t border-white/10 py-12 md:py-16">
+    <div class="reveal-fade mb-8 md:mb-10">
+      <p class="mb-2 text-[10px] uppercase tracking-[0.28em] text-accent">The process</p>
+      <h2 class="text-2xl font-black md:text-3xl">How it works</h2>
+    </div>
+
+    <div data-services-process class="process-stepper">
+      {
+        serviceProcess.map((step, i) => (
+          <div class="process-stepper__item">
+            <button
+              type="button"
+              role="tab"
+              data-process-step={i}
+              class:list={["process-stepper__node focus-ring", i === 0 && "is-active"]}
+              aria-selected={i === 0 ? "true" : "false"}
+              aria-expanded={i === 0 ? "true" : "false"}
+              aria-controls={`process-panel-${step.step}`}
+              id={`process-tab-${step.step}`}
+            >
+              <span class="process-stepper__num">{step.step}</span>
+              <span class="process-stepper__node-label">Step {step.step}</span>
+              <span class="process-stepper__chevron" aria-hidden="true">
+                <ChevronDown size={14} />
+              </span>
+            </button>
+
+            <article
+              id={`process-panel-${step.step}`}
+              role="tabpanel"
+              aria-labelledby={`process-tab-${step.step}`}
+              data-process-panel
+              data-process-index={i}
+              class:list={["process-stepper__panel services-process__step", i === 0 && "is-active"]}
+              hidden={i !== 0}
+            >
+              <div class="process-stepper__panel-head">
+                <PinkDot icon={step.icon} />
+                <p class="process-stepper__panel-step">Step {step.step}</p>
+              </div>
+              <h3 class="process-stepper__panel-title">{step.title}</h3>
+              <p class="process-stepper__panel-desc">{step.description}</p>
+            </article>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="reveal w-full pb-6 md:pb-10">
+    <CtaBanner heading={servicesCta.heading} bgImg={servicesCta.bgImg} />
+  </div>
+</InnerPage>

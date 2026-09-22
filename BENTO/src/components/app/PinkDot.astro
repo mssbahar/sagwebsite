@@ -1,0 +1,26 @@
+---
+import * as icons from "@lucide/astro";
+
+interface Props {
+  icon: string;
+  lg?: boolean;
+  tone?: "glass" | "pink";
+}
+
+const { icon, lg = false, tone = "glass" } = Astro.props;
+const Icon = (icons as Record<string, any>)[icon] ?? icons.Circle;
+const box = lg ? "w-9 h-9 rounded-xl" : "w-8 h-8 rounded-lg";
+
+const tones = {
+  glass: "bg-white/10 border border-white/20 backdrop-blur-md text-white transition-colors duration-300",
+  pink: "bg-accent border border-transparent text-white",
+};
+---
+
+<div
+  data-pink-dot
+  data-tone={tone}
+  class:list={[box, tones[tone], "flex items-center justify-center shrink-0 transition-transform duration-300 ease-out group-hover:scale-110"]}
+>
+  <Icon size={lg ? 16 : 14} stroke-width={2.25} />
+</div>
