@@ -18,7 +18,7 @@ export const branches: Branch[] = [
   {
     id: "subang-jaya",
     name: "Subang Jaya",
-    region: "SGR",
+    region: "Selangor",
     address: "No.5, Lorong SS13/3B, Subang Jaya Industrial Estate, 47500 Subang Jaya.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
     phone: "010-212 3939",
@@ -32,7 +32,7 @@ export const branches: Branch[] = [
   {
     id: "bukit-raja",
     name: "Bukit Raja",
-    region: "SGR",
+    region: "Selangor",
     address: "No.26, Jalan Astaka 4B/KU2, Bandar Bukit Raja, 41050 Klang, Selangor.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
     phone: "010-212 3939",
@@ -45,7 +45,7 @@ export const branches: Branch[] = [
   {
     id: "kajang",
     name: "Kajang",
-    region: "SGR",
+    region: "Selangor",
     address: "Lot 1357, Batu 15 1/2, Jalan Semenyih, 43000 Kajang, Selangor.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
     phone: "010-212 3939",
@@ -58,7 +58,7 @@ export const branches: Branch[] = [
   {
     id: "chan-sow-lin",
     name: "Chan Sow Lin",
-    region: "KL",
+    region: "Kuala Lumpur",
     address: "No.46, Jalan Chan Sow Lin, 55200 Kuala Lumpur.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
     phone: "010-212 3939",
@@ -71,7 +71,7 @@ export const branches: Branch[] = [
   {
     id: "mount-austin",
     name: "Mount Austin",
-    region: "JHR",
+    region: "Johor",
     address: "No.21, Jalan Mutiara Emas 5/2, Taman Mount Austin, 81100 Johor Bahru, Johor.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
     phone: "010-212 3939",
@@ -84,7 +84,7 @@ export const branches: Branch[] = [
   {
     id: "skudai",
     name: "Skudai",
-    region: "JHR",
+    region: "Johor",
     address: "No.15, Jalan Persiaran Skudai 8, Pusat Perusahaan Skudai 8, 81300 Skudai, Johor.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
     phone: "010-212 3939",
@@ -97,7 +97,7 @@ export const branches: Branch[] = [
   {
     id: "segamat",
     name: "Segamat",
-    region: "JHR",
+    region: "Johor",
     address: "Lot 14, Jalan Kejuruteraan 5, Jalan Genuang, Kawasan Perindustrian, 85000 Segamat, Johor.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
     phone: "010-212 3939",
@@ -110,7 +110,7 @@ export const branches: Branch[] = [
   {
     id: "kota-bharu",
     name: "Kota Bharu",
-    region: "KTN",
+    region: "Kelantan",
     address: "Lot 101, Jalan Dusun Muda, 15200 Kota Bharu, Kelantan.",
     hours: "Sat – Thu 9:30AM – 6:00PM",
     phone: "010-212 3939",
@@ -123,7 +123,7 @@ export const branches: Branch[] = [
   {
     id: "bukit-mertajam",
     name: "Bukit Mertajam",
-    region: "PNG",
+    region: "Pulau Pinang",
     address: "No.11A, Lorong Asas Jaya 11, Kawasan Industri Ringan Asas Jaya, 14000 Bukit Mertajam, Pulau Pinang.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
     phone: "010-212 3939",
@@ -136,7 +136,7 @@ export const branches: Branch[] = [
   {
     id: "kuching",
     name: "Kuching",
-    region: "SRWK",
+    region: "Sarawak",
     address: "Lot 2033, Bintawa Industrial Estate, Jalan Semangat, 93450 Kuching, Sarawak.",
     hours: "Mon – Sat 8:30AM – 5:00PM",
     phone: "010-212 3939",

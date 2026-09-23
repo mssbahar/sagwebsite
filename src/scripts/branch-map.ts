@@ -31,11 +31,22 @@ export class BranchMapController {
       scrollWheelZoom: true,
     });
 
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: "abcd",
-      maxZoom: 19,
-    }).addTo(this.map);
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution:
+          'Tiles &copy; <a href="https://www.esri.com/">Esri</a> — Esri, DeLorme, NAVTEQ',
+        maxZoom: 16,
+      },
+    ).addTo(this.map);
+
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
+      {
+        attribution: "",
+        maxZoom: 16,
+      },
+    ).addTo(this.map);
 
     const points = branches.map((b) => L.latLng(b.lat, b.lng));
     const bounds = L.latLngBounds(points);
@@ -70,10 +81,11 @@ export class BranchMapController {
     if (!marker) return;
 
     const latlng = marker.getLatLng();
+    const zoom = Math.min(16, Math.max(this.map.getZoom(), 13));
     if (animate) {
-      this.map.flyTo(latlng, Math.max(this.map.getZoom(), 13), { duration: 1.1 });
+      this.map.flyTo(latlng, zoom, { duration: 1.1 });
     } else {
-      this.map.setView(latlng, Math.max(this.map.getZoom(), 13), { animate: false });
+      this.map.setView(latlng, zoom, { animate: false });
     }
   }
 

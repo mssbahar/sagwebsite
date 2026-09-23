@@ -6,6 +6,7 @@ import { locationsMotion } from "./locations-map";
 import { reviewsMotion } from "./reviews";
 import { workshopMotion } from "./workshop";
 import { contactMotion } from "./contact";
+import { promotionsMotion } from "./promotions";
 import { dashboardMotion, landingMotion } from "./landing-dashboard";
 
 const PAGE_MOTIONS: Record<string, PageMotionModule> = {
@@ -17,6 +18,7 @@ const PAGE_MOTIONS: Record<string, PageMotionModule> = {
   reviews: reviewsMotion,
   workshop: workshopMotion,
   contact: contactMotion,
+  promotions: promotionsMotion,
 };
 
 let activeView: string | null = null;

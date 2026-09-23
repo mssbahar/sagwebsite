@@ -270,7 +270,7 @@ function getDashboardPanel() {
 const LANDING_WRAP =
   "explore-close-wrap explore-close-wrap--landing explore-close-wrap--pill fixed inset-x-0 bottom-0 z-[60] flex w-full justify-center px-3 pb-[calc(0.65rem+env(safe-area-inset-bottom))] md:inset-x-auto md:bottom-10 md:left-1/2 md:w-auto md:px-0 md:pb-0 md:-translate-x-1/2";
 const DOCKED_WRAP =
-  "explore-close-wrap explore-close-wrap--docked explore-close-wrap--pill relative z-10 flex w-full shrink-0 justify-center px-3 pb-[calc(0.5rem+env(safe-area-inset-bottom))] md:px-4 md:pb-6";
+  "explore-close-wrap explore-close-wrap--docked explore-close-wrap--pill relative z-10 flex w-full shrink-0 justify-center px-3 pb-[calc(0.35rem+env(safe-area-inset-bottom))] md:px-3 md:pb-2";
 
 type NavCtaMode = "explore" | "close" | "back";
 
@@ -330,7 +330,11 @@ function updateExploreClose(view: ViewName, opts?: { dock?: boolean }) {
   const wrap = document.getElementById("explore-close-wrap");
   if (!wrap) return;
 
-  const show = view === "landing" || view === "dashboard" || isInnerView(view);
+  const cinema =
+    view === "landing" &&
+    document.documentElement.dataset.landingPhase === "cinema";
+  const show =
+    !cinema && (view === "landing" || view === "dashboard" || isInnerView(view));
   wrap.style.display = show ? "" : "none";
 
   if (view === "landing") setNavCtaMode("explore");
@@ -343,6 +347,9 @@ function updateExploreClose(view: ViewName, opts?: { dock?: boolean }) {
 function animateHero() {
   const landing = views.get("landing");
   if (!landing) return;
+
+  const phase = document.documentElement.dataset.landingPhase;
+  if (phase === "cinema") return;
 
   const items = landing.querySelectorAll<HTMLElement>(".hero-item");
   gsap.killTweensOf(items);
@@ -370,12 +377,11 @@ function animateHero() {
 }
 
 function toggleLandingVideo(view: ViewName) {
-  const video = document.querySelector<HTMLVideoElement>(
-    '[data-view="landing"] video',
-  );
+  const video = document.querySelector<HTMLVideoElement>("[data-landing-video]");
   if (!video) return;
 
   const reduce = prefersReducedMotion();
+  const phase = document.documentElement.dataset.landingPhase;
   if (view === "landing") {
     gsap.killTweensOf(video);
     if (reduce) {
@@ -386,10 +392,15 @@ function toggleLandingVideo(view: ViewName) {
         scale: 1.04,
         duration: MOTION.microFade,
         ease: "none",
-        onComplete: () => video.play?.().catch(() => {}),
+        onComplete: () => {
+          if (phase === "cinema") return;
+          video.play?.().catch(() => {});
+        },
       });
     }
-    if (reduce) video.play?.().catch(() => {});
+    if (reduce && phase !== "cinema") {
+      video.play?.().catch(() => {});
+    }
     return;
   }
 
@@ -410,8 +421,8 @@ function toggleLandingVideo(view: ViewName) {
 function onEnter(view: ViewName) {
   document.documentElement.dataset.appView = view;
   updateExploreClose(view);
-  if (view === "landing") animateHero();
   document.dispatchEvent(new CustomEvent("view:enter", { detail: view }));
+  if (view === "landing") animateHero();
 }
 
 function openDashboard(instant = false) {
@@ -886,6 +897,11 @@ export function initViews() {
       }
       toggleDashboard();
     });
+
+  document.addEventListener("landing:home", () => {
+    updateExploreClose("landing");
+    animateHero();
+  });
 
   document.querySelectorAll<HTMLElement>("[data-nav-to]").forEach((el) => {
     if (el.hasAttribute("data-explore-close")) return;

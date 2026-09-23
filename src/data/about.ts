@@ -13,19 +13,24 @@ export type AboutTimelineItem = {
   day?: string;
   title: string;
   description: string;
+  image: string;
+  imageAlt: string;
 };
 
 export type AboutFuturePlan = {
   number: string;
   title: string;
+  teaser: string;
   description: string;
+  image: string;
+  imageAlt: string;
 };
 
 export const aboutHero = {
-  eyebrow: "About Us",
+  eyebrow: "Our Mission",
   headline: "Caring for your car, the smart way.",
   intro:
-    "Smart Autocare Garage aims to transform Malaysia's auto repair industry by becoming the trusted, go-to destination for all automotive needs. We provide professional, high-quality service in a friendly, welcoming environment, while expanding nationwide and partnering with reputable industry leaders to elevate standards and customer satisfaction.",
+    "We're reshaping auto repair in Malaysia — quality service in a space that feels like home. We grow nationwide and partner with trusted industry allies so professionalism and customer care become the new standard.",
   /** Replace with final hero image path */
   image: "/images/branches/branch-02.jpg",
   imageAlt: "[Placeholder: workshop or HQ hero image]",
@@ -45,34 +50,116 @@ export const aboutPerformance = {
 
 export const aboutVision = {
   eyebrow: "Our Vision",
-  headline: "[Placeholder: vision headline]",
-  lead: "[Placeholder: one-line vision statement — shown in accent pink.]",
-  body: "[Placeholder: supporting vision copy — 1–2 sentences on where SAG is headed.]",
+  headline: "Trusted care, in every state.",
+  lead: "To be Malaysia's go-to for all automotive needs — with a presence nationwide.",
+  body: "Wherever you are, you can rely on SAG for peace of mind and service you trust.",
 };
 
-/** Replace each item with real milestones (year, title, description). */
+/** Branch openings from SAG Company Profile 2026 V1 (Milestones). */
 export const aboutTimeline: AboutTimelineItem[] = [
   {
     year: "2017",
-    month: "Jan",
-    day: "01",
-    title: "[Placeholder: milestone title]",
-    description: "[Placeholder: what happened this year.]",
+    title: "HQ opens in Selangor",
+    description:
+      "Smart Autocare Garage opens its headquarters in Subang Jaya — the start of our nationwide network.",
+    image: "/images/branches/branch-01.jpg",
+    imageAlt: "Smart Autocare Garage Subang Jaya HQ",
   },
   {
-    year: "[YYYY]",
-    title: "[Placeholder: milestone title]",
-    description: "[Placeholder: what happened this year.]",
+    year: "2020",
+    title: "1st Johor branch",
+    description:
+      "We expand south with our first Johor outlet in Mount Austin, Johor Bahru.",
+    image: "/images/branches/branch-05.jpg",
+    imageAlt: "Smart Autocare Garage Mount Austin",
   },
   {
-    year: "[YYYY]",
-    title: "[Placeholder: milestone title]",
-    description: "[Placeholder: what happened this year.]",
+    year: "2021",
+    title: "1st Kuala Lumpur branch",
+    description:
+      "SAG arrives in the capital with our Chan Sow Lin workshop.",
+    image: "/images/branches/branch-04.jpg",
+    imageAlt: "Smart Autocare Garage Chan Sow Lin",
   },
   {
-    year: "[YYYY]",
-    title: "[Placeholder: milestone title]",
-    description: "[Placeholder: what happened this year.]",
+    year: "2023",
+    title: "2nd Selangor branch",
+    description:
+      "Bukit Raja in Klang opens, growing our presence across Selangor.",
+    image: "/images/branches/branch-02.jpg",
+    imageAlt: "Smart Autocare Garage Bukit Raja",
+  },
+  {
+    year: "2024",
+    title: "1st Kelantan branch",
+    description:
+      "We open in Kota Bharu, bringing SAG service to the East Coast.",
+    image: "/images/branches/branch-08.jpg",
+    imageAlt: "Smart Autocare Garage Kota Bharu",
+  },
+  {
+    year: "2024",
+    title: "1st Penang branch",
+    description:
+      "Bukit Mertajam opens — our first workshop in Pulau Pinang.",
+    image: "/images/branches/branch-09.jpg",
+    imageAlt: "Smart Autocare Garage Bukit Mertajam",
+  },
+  {
+    year: "2024",
+    title: "2nd Johor branch",
+    description:
+      "Segamat joins the network, strengthening coverage across Johor.",
+    image: "/images/branches/branch-07.jpg",
+    imageAlt: "Smart Autocare Garage Segamat",
+  },
+  {
+    year: "2024",
+    title: "1st Sarawak branch",
+    description:
+      "Kuching opens — SAG's first East Malaysia workshop.",
+    image: "/images/branches/branch-10.jpg",
+    imageAlt: "Smart Autocare Garage Kuching",
+  },
+  {
+    year: "2024",
+    title: "4th Selangor branch",
+    description:
+      "Balakong opens, adding another Selangor location for customers nearby.",
+    image: "/images/branches/branch-03.jpg",
+    imageAlt: "Smart Autocare Garage Balakong",
+  },
+  {
+    year: "2025",
+    title: "3rd Johor branch",
+    description:
+      "Skudai opens, expanding our Johor footprint further.",
+    image: "/images/branches/branch-06.jpg",
+    imageAlt: "Smart Autocare Garage Skudai",
+  },
+  {
+    year: "2025",
+    title: "3rd Selangor branch",
+    description:
+      "Kajang opens, bringing SAG closer to more Selangor drivers.",
+    image: "/images/branches/branch-03.jpg",
+    imageAlt: "Smart Autocare Garage Kajang",
+  },
+  {
+    year: "2026",
+    title: "2nd Penang branch",
+    description:
+      "Air Itam (Georgetown) opens — our second Penang workshop.",
+    image: "/images/branches/branch-09.jpg",
+    imageAlt: "Smart Autocare Garage Air Itam",
+  },
+  {
+    year: "2028",
+    title: "Nationwide coverage",
+    description:
+      "By 2028, we aim to cover all of Malaysia — so wherever you drive, SAG is nearby.",
+    image: "/images/herovisual.png",
+    imageAlt: "Smart Autocare Garage nationwide network vision",
   },
 ];
 
@@ -80,26 +167,38 @@ export const aboutFuturePlans: AboutFuturePlan[] = [
   {
     number: "01",
     title: "Nationwide expansion",
+    teaser: "Every state in Malaysia",
     description:
-      "Smart Autocare Garage aims to transform the auto repair industry in Malaysia by becoming the trusted destination for all automotive needs.",
+      "Expand Smart Autocare Garage across every state — so wherever you are, you can count on warm, reliable service while we stay honest and transparent.",
+    image: "/images/herovisual.png",
+    imageAlt: "SAG workshops expanding across Malaysia",
   },
   {
     number: "02",
-    title: "Strengthening Customer Relationships",
+    title: "Customer relationships",
+    teaser: "Care that feels like family",
     description:
-      "We are committed to building lasting relationships by providing honest, friendly, and trustworthy service to a trusted family member.",
+      "Keep every visit personal with friendly service and honest advice — so each stop at SAG feels like visiting someone you trust.",
+    image: "/images/branches/branch-05.jpg",
+    imageAlt: "Welcoming customer experience at SAG",
   },
   {
     number: "03",
-    title: "Offering More Choices and Flexibility",
+    title: "Choices & flexibility",
+    teaser: "Options for every budget",
     description:
-      "We offer flexible service options and affordable choices to suit different needs and budgets, empowering customers to make informed decisions with confidence.",
+      "Offer a wide range of services, parts, and affordable alternatives — so customers can choose with confidence.",
+    image: "/images/branches/branch-06.jpg",
+    imageAlt: "Flexible service and parts options at SAG",
   },
   {
     number: "04",
-    title: "Building strong partnerships",
+    title: "Strong partnerships",
+    teaser: "Trusted industry allies",
     description:
-      "We partner with reputable suppliers and industry leaders to bring innovative, trusted, and high-quality solutions.",
+      "Partner with reputable suppliers and industry leaders to bring innovative, high-quality solutions our customers can rely on.",
+    image: "/images/branches/branch-04.jpg",
+    imageAlt: "SAG industry partnerships and quality parts",
   },
 ];
 

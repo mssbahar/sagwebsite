@@ -36,3 +36,6 @@ AGENTS.md
 CLAUDE.md
 assets.md
 design.md
+
+# ── Local source assets (keep originals off GitHub; site uses /public) ──
+ASSETS/

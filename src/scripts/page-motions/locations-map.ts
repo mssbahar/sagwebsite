@@ -60,7 +60,7 @@ export const locationsMotion = createPageMotion((root) => {
     map?.destroy();
     map = new BranchMapController(mapEl, mapBranches);
     map.onSelect = (id) => setSelected(id, true, { scrollIntoView: true });
-    requestAnimationFrame(() => map?.invalidateSize());
+    requestAnimationFrame(() => map?.invalidate());
   };
 
   initMap();
