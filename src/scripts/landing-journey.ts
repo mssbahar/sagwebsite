@@ -12,12 +12,14 @@ export function initLandingJourney() {
     "[data-landing-video]",
   );
   const skip = document.querySelector<HTMLButtonElement>("[data-cinema-skip]");
+  const soundBtn = document.querySelector<HTMLButtonElement>("[data-cinema-sound]");
   const chrome = document.querySelector<HTMLElement>("[data-cinema-chrome]");
   const home = document.querySelector<HTMLElement>("[data-landing-home]");
   const veil = document.querySelector<HTMLElement>("[data-landing-veil]");
   if (!landing || !video || !skip || !home || !chrome) return;
 
   let finishing = false;
+  let unlockBound = false;
 
   const setPhase = (phase: Phase) => {
     landing.dataset.landingPhase = phase;
@@ -43,10 +45,44 @@ export function initLandingJourney() {
     el.hidden = true;
   };
 
+  const setSoundButtonVisible = (visible: boolean) => {
+    if (!soundBtn) return;
+    soundBtn.hidden = !visible;
+  };
+
+  const unmuteIntro = async () => {
+    if (landing.dataset.landingPhase !== "cinema") return;
+    video.muted = false;
+    setSoundButtonVisible(false);
+    try {
+      await video.play();
+    } catch {
+      /* keep trying on next gesture */
+      setSoundButtonVisible(true);
+    }
+  };
+
+  const bindSoundUnlock = () => {
+    if (unlockBound) return;
+    unlockBound = true;
+
+    const onGesture = () => {
+      void unmuteIntro();
+    };
+
+    document.addEventListener("pointerdown", onGesture, { passive: true });
+    document.addEventListener("keydown", onGesture);
+    soundBtn?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      void unmuteIntro();
+    });
+  };
+
   const showHome = () => {
     finishing = false;
     video.loop = true;
     video.muted = true;
+    setSoundButtonVisible(false);
     showLayer(chrome, false);
     showLayer(home, true);
     setVeil(VEIL_HOME, prefersReducedMotion() ? 0 : 0.4);
@@ -65,30 +101,23 @@ export function initLandingJourney() {
   };
 
   const playIntroWithSound = async () => {
+    bindSoundUnlock();
     video.muted = false;
     try {
       await video.play();
+      setSoundButtonVisible(false);
       return;
     } catch {
-      /* Autoplay with sound blocked — play muted, unmute on first gesture */
+      /* Browsers block autoplay + sound until a user gesture */
     }
 
     video.muted = true;
+    setSoundButtonVisible(true);
     try {
       await video.play();
     } catch {
       finishCinema();
-      return;
     }
-
-    const unmute = () => {
-      if (landing.dataset.landingPhase !== "cinema") return;
-      video.muted = false;
-      document.removeEventListener("pointerdown", unmute);
-      document.removeEventListener("keydown", unmute);
-    };
-    document.addEventListener("pointerdown", unmute, { passive: true });
-    document.addEventListener("keydown", unmute);
   };
 
   const startCinema = () => {

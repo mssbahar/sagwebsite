@@ -1081,7 +1081,21 @@ html[data-hash-inner] .view[data-view="landing"] {
   padding: 0.5rem 0.75rem;
 }
 
+.cinema-skip--sound {
+  border: 1px solid rgb(255 255 255 / 0.28);
+  border-radius: 999px;
+  padding-inline: 1.15rem;
+  color: #fff;
+  background: rgb(0 0 0 / 0.35);
+  backdrop-filter: blur(8px);
+}
+
 .cinema-skip:hover {
+  color: var(--color-accent, #f6047c);
+}
+
+.cinema-skip--sound:hover {
+  border-color: var(--color-accent, #f6047c);
   color: var(--color-accent, #f6047c);
 }
 
