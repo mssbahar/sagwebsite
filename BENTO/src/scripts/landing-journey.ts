@@ -1,34 +1,17 @@
 import { gsap, prefersReducedMotion } from "./gsap-init";
-import { setSiteAudioPlaying } from "./audio";
-import { navigate } from "./views";
 
 type Phase = "cinema" | "home" | "idle";
 
-const SEEN_KEY = "sag-seen-cinema";
 const VEIL_CINEMA = 0.08;
+const VEIL_HOME = 0.22;
 const VEIL_DASH = 0.4;
-
-function hasSeenCinema() {
-  try {
-    return sessionStorage.getItem(SEEN_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
-function markCinemaSeen() {
-  try {
-    sessionStorage.setItem(SEEN_KEY, "1");
-  } catch {
-    /* private mode */
-  }
-}
 
 export function initLandingJourney() {
   const landing = document.querySelector<HTMLElement>('[data-view="landing"]');
-  const video = document.querySelector<HTMLVideoElement>("[data-landing-video]");
+  const video = document.querySelector<HTMLVideoElement>(
+    "[data-landing-video]",
+  );
   const skip = document.querySelector<HTMLButtonElement>("[data-cinema-skip]");
-  const sound = document.querySelector<HTMLButtonElement>("[data-cinema-sound]");
   const chrome = document.querySelector<HTMLElement>("[data-cinema-chrome]");
   const home = document.querySelector<HTMLElement>("[data-landing-home]");
   const veil = document.querySelector<HTMLElement>("[data-landing-veil]");
@@ -62,12 +45,11 @@ export function initLandingJourney() {
 
   const showHome = () => {
     finishing = false;
-    markCinemaSeen();
     video.loop = true;
     video.muted = true;
     showLayer(chrome, false);
     showLayer(home, true);
-    setVeil(0, prefersReducedMotion() ? 0 : 0.4);
+    setVeil(VEIL_HOME, prefersReducedMotion() ? 0 : 0.4);
     setPhase("home");
     document.dispatchEvent(new CustomEvent("landing:home"));
     video.play()?.catch(() => {
@@ -80,6 +62,33 @@ export function initLandingJourney() {
     if (landing.dataset.landingPhase !== "cinema") return;
     finishing = true;
     showHome();
+  };
+
+  const playIntroWithSound = async () => {
+    video.muted = false;
+    try {
+      await video.play();
+      return;
+    } catch {
+      /* Autoplay with sound blocked — play muted, unmute on first gesture */
+    }
+
+    video.muted = true;
+    try {
+      await video.play();
+    } catch {
+      finishCinema();
+      return;
+    }
+
+    const unmute = () => {
+      if (landing.dataset.landingPhase !== "cinema") return;
+      video.muted = false;
+      document.removeEventListener("pointerdown", unmute);
+      document.removeEventListener("keydown", unmute);
+    };
+    document.addEventListener("pointerdown", unmute, { passive: true });
+    document.addEventListener("keydown", unmute);
   };
 
   const startCinema = () => {
@@ -95,21 +104,15 @@ export function initLandingJourney() {
     );
 
     video.loop = false;
-    video.muted = true;
     try {
       video.currentTime = 0;
     } catch {
       /* ignore */
     }
-    video.play()?.catch(() => finishCinema());
+    void playIntroWithSound();
   };
 
   skip.addEventListener("click", finishCinema);
-  sound?.addEventListener("click", () => {
-    video.muted = false;
-    setSiteAudioPlaying(true);
-    sound.hidden = true;
-  });
   video.addEventListener("ended", finishCinema);
   video.addEventListener("error", () => {
     if (landing.dataset.landingPhase === "cinema") finishCinema();
@@ -135,7 +138,6 @@ export function initLandingJourney() {
 
   const startView = document.documentElement.dataset.appView || "landing";
   if (startView !== "landing") {
-    markCinemaSeen();
     showLayer(chrome, false);
     showLayer(home, true);
     setVeil(VEIL_DASH);
@@ -143,7 +145,7 @@ export function initLandingJourney() {
     return;
   }
 
-  if (hasSeenCinema() || prefersReducedMotion()) {
+  if (prefersReducedMotion()) {
     showHome();
     return;
   }

@@ -48,20 +48,26 @@ export const aboutMotion = createPageMotion((root) => {
   const plansGrid = root.querySelector<HTMLElement>("[data-about-plans-grid]");
   const planCleanups: Array<() => void> = [];
 
+  const setExpanded = (card: HTMLElement | null) => {
+    planCards.forEach((item) => {
+      const open = item === card;
+      item.classList.toggle("is-expanded", open);
+      item.setAttribute("aria-expanded", String(open));
+    });
+  };
+
   planCards.forEach((card) => {
-    const toggle = () => {
-      card.classList.toggle("is-flipped");
-      card.setAttribute("aria-pressed", String(card.classList.contains("is-flipped")));
+    const onActivate = () => {
+      const already = card.classList.contains("is-expanded");
+      setExpanded(already ? null : card);
     };
-    const onClick = () => toggle();
+    const onClick = () => onActivate();
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
-        toggle();
+        onActivate();
       }
     };
-    card.setAttribute("role", "button");
-    card.setAttribute("aria-pressed", "false");
     card.addEventListener("click", onClick);
     card.addEventListener("keydown", onKeyDown);
     planCleanups.push(() => {
@@ -73,11 +79,12 @@ export const aboutMotion = createPageMotion((root) => {
   if (planCards.length && plansGrid && !prefersReducedMotion()) {
     gsap.fromTo(
       planCards,
-      { y: 28, opacity: 1 },
+      { y: 36, opacity: 0 },
       {
         y: 0,
-        duration: 0.85,
-        stagger: 0.1,
+        opacity: 1,
+        duration: 0.9,
+        stagger: 0.12,
         ease: MOTION.panelEase,
         scrollTrigger: {
           trigger: plansGrid,

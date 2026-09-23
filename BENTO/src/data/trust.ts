@@ -13,7 +13,6 @@ export const landingCopy = {
   sub: "Professional care, on-demand service and trusted automotive solutions. SAG puts your vehicle in expert hands.",
   bookLabel: "Book a service on WhatsApp",
   skip: "Skip",
-  soundOn: "Sound on",
 };
 
 /** What the car / owner gets — not company vanity metrics */

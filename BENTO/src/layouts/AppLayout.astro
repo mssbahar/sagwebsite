@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css";
-import AudioPlayer from "../components/app/AudioPlayer.astro";
 import ExploreCloseCta from "../components/app/ExploreCloseCta.astro";
 import SiteLoader from "../components/app/SiteLoader.astro";
 import { site } from "../data/site";
@@ -37,7 +36,7 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-landing-phase="cinema">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -58,6 +57,9 @@ const jsonLd = {
     <script is:inline>
       (function () {
         var h = location.hash.replace(/^#/, "");
+        if (h && h !== "landing") {
+          document.documentElement.dataset.landingPhase = "idle";
+        }
         if (h && h !== "landing" && h !== "dashboard") {
           document.documentElement.dataset.hashInner = h;
         }
@@ -74,13 +76,11 @@ const jsonLd = {
       ></div>
       <slot />
       <ExploreCloseCta />
-      <AudioPlayer />
     </div>
 
     <script>
       import { initSiteLoader } from "../scripts/loader";
       import { initPageMotions, syncActivePageMotion } from "../scripts/page-motions";
-      import { initAudio } from "../scripts/audio";
       import { initViews } from "../scripts/views";
       import { initReveals } from "../scripts/reveals";
       import { initCarousel } from "../scripts/carousel";
@@ -95,7 +95,6 @@ const jsonLd = {
       initLandingJourney();
       syncActivePageMotion();
       initCarousel();
-      initAudio();
     </script>
   </body>
 </html>

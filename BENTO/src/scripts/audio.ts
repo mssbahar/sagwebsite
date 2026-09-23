@@ -1,4 +1,3 @@
-const DEFAULT_VOLUME = 0.5;
 const UI_CLICK_SRC = "/audio/ui-click.mp3";
 const UI_CLICK_VOLUME = 0.38;
 
@@ -41,62 +40,6 @@ export function playUiClick() {
   });
 }
 
-function setPlayingState(button: HTMLButtonElement, playing: boolean) {
-  button.dataset.playing = playing ? "true" : "false";
-  button.setAttribute("aria-pressed", String(playing));
-  button.setAttribute(
-    "aria-label",
-    playing ? "Pause background music" : "Play background music",
-  );
-}
-
-export function setSiteAudioPlaying(shouldPlay: boolean) {
-  const audio = document.getElementById("site-audio") as HTMLAudioElement | null;
-  if (!audio) return;
-  if (shouldPlay) {
-    audio.play().catch(() => {
-      /* autoplay can still fail if the gesture is already spent */
-    });
-    return;
-  }
-  audio.pause();
-}
-
-export function initAudio() {
-  const audio = document.getElementById("site-audio") as HTMLAudioElement | null;
-  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-audio-toggle]");
-
-  if (!audio || buttons.length === 0) return;
-
-  audio.loop = true;
-  audio.volume = DEFAULT_VOLUME;
-
-  const syncUi = () => {
-    const playing = !audio.paused;
-    buttons.forEach((button) => setPlayingState(button, playing));
-  };
-
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      unlockUiClick();
-      if (audio.paused) {
-        audio.play().catch(() => syncUi());
-      } else {
-        audio.pause();
-      }
-    });
-  });
-
-  audio.addEventListener("play", syncUi);
-  audio.addEventListener("pause", syncUi);
-  audio.addEventListener("ended", () => {
-    if (audio.loop) {
-      audio.currentTime = 0;
-      audio.play().catch(() => syncUi());
-    }
-    syncUi();
-  });
-
-  syncUi();
+if (typeof document !== "undefined") {
   document.addEventListener("pointerdown", () => unlockUiClick(), { once: true, passive: true });
 }

@@ -1,6 +1,5 @@
 ---
 import { ArrowUpRight, ChevronLeft, ChevronRight, Star } from "@lucide/astro";
-import AudioToggle from "./AudioToggle.astro";
 import PinkDot from "./PinkDot.astro";
 import SocialIcon from "./SocialIcon.astro";
 import { site } from "../../data/site";
@@ -151,7 +150,7 @@ const heroOverlay = "dashboard-bento__hero-overlay absolute inset-0";
           </button>
         </div>
 
-        <!-- RIGHT: social / audio / book now -->
+        <!-- RIGHT: social / book now -->
         <div class="dashboard-bento__social">
           <a
             href={ig}
@@ -183,7 +182,6 @@ const heroOverlay = "dashboard-bento__hero-overlay absolute inset-0";
           >
             <SocialIcon name="tiktok" size={20} />
           </a>
-          <AudioToggle data-dashboard-tile class={socialSq} />
           <a
             href={site.whatsappUrl}
             target="_blank"

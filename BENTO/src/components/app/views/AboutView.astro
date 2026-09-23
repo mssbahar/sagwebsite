@@ -96,27 +96,39 @@ import {
 
   <!-- Future plans -->
   <section class="about-section mb-14 border-t border-white/10 pt-10">
-    <div class="reveal-fade mb-8">
-      <h2 class="text-2xl font-black md:text-3xl">Our Future Plans</h2>
+    <div class="reveal-fade mb-3 flex items-center gap-3">
+      <PinkDot icon="Sparkles" />
+      <p class="text-xs uppercase tracking-[0.22em] text-white/75">Our Future Plans</p>
     </div>
+    <p class="reveal-fade mb-8 max-w-2xl text-sm leading-relaxed text-white/60">
+      Where SAG is headed next — select a pillar below to read more.
+    </p>
 
-    <div data-about-plans-grid class="about-plans grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-4">
+    <div data-about-plans-grid class="about-plans">
       {
         aboutFuturePlans.map((plan) => (
           <article
             data-about-plan
-            class="flip-card focus-ring"
+            class="about-plan focus-ring"
             tabindex="0"
-            aria-label={plan.title}
+            role="button"
+            aria-expanded="false"
+            aria-label={`${plan.title}. Select to read more.`}
           >
-            <div class="flip-card-inner">
-              <div class="flip-card-front">
-                <span class="flip-card__num">{plan.number}</span>
-                <h3 class="flip-card__title">{plan.title}</h3>
-              </div>
-              <div class="flip-card-back">
-                <p class="flip-card__desc">{plan.description}</p>
-              </div>
+            <img
+              class="about-plan__img"
+              src={plan.image}
+              alt={plan.imageAlt}
+              loading="lazy"
+              decoding="async"
+              width="640"
+              height="860"
+            />
+            <div class="about-plan__copy">
+              <span class="about-plan__num" aria-hidden="true">{plan.number}</span>
+              <h3 class="about-plan__title">{plan.title}</h3>
+              <p class="about-plan__teaser">{plan.teaser}</p>
+              <p class="about-plan__detail">{plan.description}</p>
             </div>
           </article>
         ))

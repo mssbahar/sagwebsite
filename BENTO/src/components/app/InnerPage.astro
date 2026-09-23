@@ -1,6 +1,5 @@
 ---
 import SocialIcon from "./SocialIcon.astro";
-import AudioToggle from "./AudioToggle.astro";
 import { socialLinks } from "../../data/social";
 
 interface Props {
@@ -36,7 +35,6 @@ const orderedSocialLinks = socialOrder
             <img src="/images/logo-primary.png" alt="SAG" class="h-full w-full object-contain" />
           </button>
           <div class="flex items-center gap-1.5 sm:gap-2">
-            <AudioToggle class={socialTile} />
             {
               orderedSocialLinks.map((link) => (
                 <a

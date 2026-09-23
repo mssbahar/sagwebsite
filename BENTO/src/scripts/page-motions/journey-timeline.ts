@@ -9,47 +9,47 @@ export function initJourneyTimeline(root: HTMLElement, scroller: Scroller) {
   if (!journey) return () => {};
 
   const items = [...journey.querySelectorAll<HTMLElement>("[data-journey-item]")];
+  const rows = [...journey.querySelectorAll<HTMLElement>("[data-journey-row]")];
   const triggers: ScrollTrigger[] = [];
 
   if (prefersReducedMotion()) {
     journey.classList.add("is-line-drawn");
     items.forEach((item) => {
       item.classList.add("is-visible");
-      gsap.set(item.querySelector("[data-journey-card]"), { autoAlpha: 1, x: 0 });
+      gsap.set(item.querySelector("[data-journey-card]"), { autoAlpha: 1, y: 0 });
     });
+    rows.forEach((row) => row.classList.add("is-path-drawn"));
     return () => {};
   }
 
   gsap.set(
     items.map((item) => item.querySelector("[data-journey-card]")),
-    { autoAlpha: 0, x: 0 },
+    { autoAlpha: 0, y: 24 },
   );
 
-  const lineTrigger = ScrollTrigger.create({
-    trigger: journey,
-    scroller,
-    start: "top 78%",
-    once: true,
-    onEnter: () => journey.classList.add("is-line-drawn"),
-  });
-  triggers.push(lineTrigger);
-
-  items.forEach((item) => {
-    const card = item.querySelector<HTMLElement>("[data-journey-card]");
-    const side = item.dataset.journeySide === "right" ? 28 : -28;
-
+  rows.forEach((row) => {
     const trigger = ScrollTrigger.create({
-      trigger: item,
+      trigger: row,
       scroller,
-      start: "top 85%",
+      start: "top 82%",
       once: true,
       onEnter: () => {
-        item.classList.add("is-visible");
-        gsap.fromTo(
-          card,
-          { autoAlpha: 0, x: side },
-          { autoAlpha: 1, x: 0, duration: 0.8, ease: MOTION.panelEase },
-        );
+        row.classList.add("is-path-drawn");
+        row.querySelectorAll<HTMLElement>("[data-journey-item]").forEach((item, i) => {
+          const card = item.querySelector<HTMLElement>("[data-journey-card]");
+          item.classList.add("is-visible");
+          gsap.fromTo(
+            card,
+            { autoAlpha: 0, y: 24 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.75,
+              delay: i * 0.1,
+              ease: MOTION.panelEase,
+            },
+          );
+        });
       },
     });
     triggers.push(trigger);

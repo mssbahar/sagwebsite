@@ -330,7 +330,11 @@ function updateExploreClose(view: ViewName, opts?: { dock?: boolean }) {
   const wrap = document.getElementById("explore-close-wrap");
   if (!wrap) return;
 
-  const show = view === "landing" || view === "dashboard" || isInnerView(view);
+  const cinema =
+    view === "landing" &&
+    document.documentElement.dataset.landingPhase === "cinema";
+  const show =
+    !cinema && (view === "landing" || view === "dashboard" || isInnerView(view));
   wrap.style.display = show ? "" : "none";
 
   if (view === "landing") setNavCtaMode("explore");
