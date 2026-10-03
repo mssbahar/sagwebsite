@@ -12,6 +12,7 @@ export function initLandingJourney() {
     "[data-landing-video]",
   );
   const skip = document.querySelector<HTMLButtonElement>("[data-cinema-skip]");
+  const rotateBtn = document.querySelector<HTMLButtonElement>("[data-cinema-rotate]");
   const soundBtn = document.querySelector<HTMLButtonElement>("[data-cinema-sound]");
   const chrome = document.querySelector<HTMLElement>("[data-cinema-chrome]");
   const home = document.querySelector<HTMLElement>("[data-landing-home]");
@@ -140,6 +141,29 @@ export function initLandingJourney() {
     }
     void playIntroWithSound();
   };
+
+  const rotateVideo = async () => {
+    const player = video as HTMLVideoElement & { webkitEnterFullscreen?: () => void };
+    if (typeof player.webkitEnterFullscreen === "function") {
+      player.webkitEnterFullscreen();
+      return;
+    }
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+        return;
+      }
+      await video.requestFullscreen();
+      await screen.orientation?.lock("landscape");
+    } catch {
+      /* some phones only rotate inside the fullscreen player */
+    }
+  };
+
+  rotateBtn?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    void rotateVideo();
+  });
 
   skip.addEventListener("click", finishCinema);
   video.addEventListener("ended", finishCinema);

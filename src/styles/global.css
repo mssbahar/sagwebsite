@@ -607,7 +607,7 @@
     grid-template-columns: 1fr;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .dashboard-bento {
       --dash-gap: 3px;
       display: grid;
@@ -986,11 +986,46 @@ html[data-hash-inner] .view[data-view="landing"] {
   opacity: 0.08;
 }
 
-/* Mobile: show the full video frame (letterbox) instead of cropping */
+/* Hero copy sits in the open space between the top bar and the bottom button. */
+.landing-copy {
+  top: 6.5rem;
+  bottom: 6.75rem;
+}
+
+@media (min-width: 768px) {
+  .landing-copy {
+    top: 7.5rem;
+    bottom: 7rem;
+  }
+}
+
+/* Mobile cinema: letterbox the film, with a YouTube-style rotate control. */
 @media (max-width: 767px) {
   :root[data-landing-phase="cinema"] [data-landing-video] {
     object-fit: contain;
     object-position: center center;
+  }
+}
+
+.cinema-rotate {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .cinema-rotate {
+    position: absolute;
+    right: 0.25rem;
+    bottom: 0.15rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgb(0 0 0 / 0.55);
+    color: #fff;
+    cursor: pointer;
   }
 }
 
@@ -1088,22 +1123,25 @@ html[data-hash-inner] .view[data-view="landing"] {
 .cta-banner__content {
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 0.9rem 1.15rem;
+  column-gap: 1.15rem;
+  row-gap: 0.85rem;
   padding: 1.1rem 1.15rem;
 }
 
 .cta-banner__logo {
+  grid-column: 1;
+  grid-row: 1 / span 2;
   width: 3.35rem;
   height: auto;
-  flex: 0 0 auto;
 }
 
 .cta-banner__heading {
+  grid-column: 2;
+  grid-row: 1;
   margin: 0;
-  flex: 1 1 12rem;
   min-width: 0;
   color: #fff;
   font-size: clamp(1.2rem, 2.1vw, 2rem);
@@ -1114,20 +1152,32 @@ html[data-hash-inner] .view[data-view="landing"] {
 }
 
 .cta-banner__btn {
-  flex: 0 0 auto;
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: start;
   font-size: 0.875rem;
   box-shadow: 0 8px 18px rgb(0 0 0 / 0.3);
 }
 
 @media (min-width: 768px) {
   .cta-banner__content {
-    flex-wrap: nowrap;
-    gap: 1.35rem;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    column-gap: 1.35rem;
     padding: 1.35rem 1.75rem;
   }
 
   .cta-banner__logo {
+    grid-row: 1;
     width: 4.25rem;
+  }
+
+  .cta-banner__heading,
+  .cta-banner__btn {
+    grid-row: 1;
+  }
+
+  .cta-banner__btn {
+    grid-column: 3;
   }
 }
 
@@ -2835,6 +2885,25 @@ html[data-hash-inner] .view[data-view="landing"] {
     justify-content: space-between;
   }
 
+  #explore-close-wrap .action-btn[data-state="explore"] {
+    width: auto;
+    max-width: none;
+    padding-inline: 1.35rem;
+  }
+
+  #explore-close-wrap .action-btn[data-state="explore"] .action-btn-stack {
+    width: auto;
+  }
+
+  #explore-close-wrap .action-btn[data-state="explore"] .action-btn-divider {
+    display: none;
+  }
+
+  #explore-close-wrap .action-btn[data-state="explore"] [data-action="explore"] {
+    justify-content: center;
+    gap: 0.7rem;
+  }
+
   #explore-close-wrap .action-btn:active {
     transform: none;
   }
@@ -2854,45 +2923,6 @@ html[data-hash-inner] .view[data-view="landing"] {
     width: 100%;
   }
 
-  /* Dashboard — mobile stack (363 order) */
-  .dashboard-bento {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 3px;
-    padding: 12px;
-    padding-bottom: 0.35rem;
-    height: auto;
-    min-height: 100%;
-  }
-
-  .dashboard-bento__hero-stage {
-    order: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    min-height: auto;
-    flex-shrink: 0;
-  }
-
-  .dashboard-bento__logo {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
-    width: 4rem;
-    height: 4rem;
-    flex-shrink: 0;
-    z-index: 1;
-    clip-path: none;
-  }
-
-  .dashboard-bento__hero {
-    position: relative !important;
-    inset: auto !important;
-    min-height: 16rem;
-    width: 100%;
-    clip-path: none !important;
-  }
-
   .dashboard-bento__hero-copy {
     width: min(94%, 26rem);
     max-width: 26rem;
@@ -2905,57 +2935,7 @@ html[data-hash-inner] .view[data-view="landing"] {
     font-size: clamp(1.85rem, 7vw, 2.35rem);
   }
 
-  .dashboard-bento__social {
-    order: 2;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(3.5rem, 1.35fr);
-    min-height: 4.25rem;
-  }
-
-  .dashboard-bento__social-sq {
-    aspect-ratio: 1 / 1;
-    min-height: 4.25rem;
-  }
-
-  .dashboard-bento__social-app {
-    min-height: 4.25rem;
-  }
-
-  .dashboard-bento__featured {
-    order: 3;
-    min-height: 14rem;
-    width: 100%;
-  }
-
-  .dashboard-bento__features {
-    order: 4;
-    display: grid !important;
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-bento__feature {
-    min-height: 8rem;
-    width: 100%;
-    flex: none !important;
-  }
-
-  .dashboard-bento__actions {
-    order: 5;
-    grid-template-columns: 1fr;
-    flex-shrink: 0;
-  }
-
-  .dashboard-bento__action {
-    min-height: 8rem;
-  }
-
-  .bento-tile:hover {
-    transform: none;
-    box-shadow: none;
-    flex: initial;
-  }
-
   /* Inner page heroes — fluid type */
-  .inner-page-content h1.text-shine,
   .inner-page-content .reviews-showcase__headline {
     font-size: clamp(1.85rem, 8.5vw, 2.5rem);
   }
@@ -3015,6 +2995,87 @@ html[data-hash-inner] .view[data-view="landing"] {
 
   .contact-card {
     min-height: auto;
+  }
+}
+
+/* Phone and tablet dashboard: logo and socials share one row, then the cards, all with the same gap. */
+@media (max-width: 1023px) {
+  .dashboard-bento {
+    display: grid;
+    grid-template-columns: 4.25rem minmax(0, 1fr);
+    gap: 0.65rem;
+    padding: 0.75rem;
+    padding-bottom: 0.35rem;
+    height: auto;
+    min-height: 100%;
+  }
+
+  .dashboard-bento__hero-stage {
+    display: contents;
+  }
+
+  .dashboard-bento__logo {
+    grid-column: 1;
+    grid-row: 1;
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 4.25rem;
+    height: 4.25rem;
+    clip-path: none;
+  }
+
+  .dashboard-bento__social {
+    grid-column: 2;
+    grid-row: 1;
+    grid-template-columns: repeat(3, minmax(2.6rem, 4.25rem)) minmax(4.25rem, 1fr);
+    gap: 0.65rem;
+    height: 4.25rem;
+    min-height: 0;
+    align-self: stretch;
+  }
+
+  .dashboard-bento__social-sq,
+  .dashboard-bento__social-app {
+    min-height: 0;
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .dashboard-bento__hero,
+  .dashboard-bento__featured,
+  .dashboard-bento__features,
+  .dashboard-bento__actions {
+    grid-column: 1 / -1;
+  }
+
+  .dashboard-bento__hero {
+    position: relative;
+    inset: auto;
+    min-height: 16rem;
+    width: 100%;
+    clip-path: none;
+  }
+
+  .dashboard-bento__featured {
+    min-height: 14rem;
+  }
+
+  .dashboard-bento__features {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .dashboard-bento__feature,
+  .dashboard-bento__action {
+    min-height: 8rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .dashboard-bento__features {
+    grid-template-columns: 1fr 1fr;
   }
 }
 

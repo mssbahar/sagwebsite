@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight } from "@lucide/astro";
+import { ArrowUpRight, RotateCw } from "@lucide/astro";
 import CtaButton from "./CtaButton.astro";
 import { site } from "../../data/site";
 import { landingCopy } from "../../data/trust";
@@ -37,17 +37,17 @@ import { landingCopy } from "../../data/trust";
         </div>
       </div>
 
-      <div class="absolute inset-0 z-10 flex flex-col items-center justify-center px-5 pb-28 text-center sm:px-8 md:pb-24">
-        <p class="hero-item mb-5 text-[0.7rem] font-semibold tracking-[0.28em] text-white/75 uppercase md:mb-6">
+      <div class="landing-copy absolute inset-x-0 z-10 flex flex-col items-center justify-center px-5 text-center sm:px-8">
+        <p class="hero-item mb-5 w-full text-[0.7rem] font-semibold tracking-[0.28em] text-white/75 uppercase md:mb-6">
           {landingCopy.eyebrow}
         </p>
         <h1
-          class="hero-item mb-5 max-w-4xl text-[clamp(2.35rem,6.2vw,4.35rem)] font-black leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.55)] md:mb-6"
+          class="hero-item mb-5 w-full max-w-4xl text-center text-[clamp(2.35rem,6.2vw,4.35rem)] font-black leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.55)] md:mb-6"
         >
           {landingCopy.headlineLine1}<br />
           {landingCopy.headlineLine2}
         </h1>
-        <p class="hero-item max-w-lg text-[0.95rem] leading-relaxed text-white/80 md:text-base">
+        <p class="hero-item w-full max-w-lg text-[0.95rem] leading-relaxed text-white/80 md:text-base">
           {landingCopy.sub}
         </p>
       </div>
@@ -58,6 +58,9 @@ import { landingCopy } from "../../data/trust";
       data-cinema-chrome
       hidden
     >
+      <button type="button" class="cinema-rotate" data-cinema-rotate aria-label="Rotate to landscape">
+        <RotateCw size={20} aria-hidden="true" />
+      </button>
       <button type="button" class="cinema-skip cinema-skip--sound" data-cinema-sound>
         {landingCopy.soundOn}
       </button>
