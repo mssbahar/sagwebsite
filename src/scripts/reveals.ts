@@ -63,7 +63,9 @@ function runCounter(el: HTMLElement) {
     snap: { value: 1 },
     overwrite: true,
     onUpdate: () => {
-      el.textContent = `${Math.round(state.value).toLocaleString()}${suffix}`;
+      const n = Math.round(state.value);
+      const formatted = n >= 10000 ? n.toLocaleString() : String(n);
+      el.textContent = `${formatted}${suffix}`;
     },
   });
 }
@@ -126,77 +128,43 @@ export function getAboveFoldReveals(viewEl: HTMLElement, limit = MOTION.aboveFol
   return (visible.length ? visible : reveals).slice(0, limit);
 }
 
-function revealAboveFold(viewEl: HTMLElement) {
-  const above = getAboveFoldReveals(viewEl);
-  if (!above.length) return;
-
-  if (prefersReducedMotion()) {
-    above.forEach((el) => revealEl(el, 0));
-    return;
-  }
-
-  const tl = gsap.timeline({ defaults: { ease: MOTION.revealEase, overwrite: true } });
-  above.forEach((el, i) => {
-    if (el.dataset.counter !== undefined) {
-      tl.call(() => runCounter(el), undefined, i * MOTION.revealStagger);
-      return;
-    }
-    if (el.classList.contains("reveal-fade")) {
-      tl.to(el, { opacity: 1, duration: MOTION.microFade, ease: "none" }, i * MOTION.revealStagger);
-      return;
-    }
-    if (el.classList.contains("reveal-image")) {
-      tl.fromTo(
-        el,
-        { opacity: 0, scale: 1.05 },
-        { opacity: 1, scale: 1, duration: MOTION.revealDuration },
-        i * MOTION.revealStagger,
-      );
-      return;
-    }
-    tl.fromTo(
-      el,
-      { opacity: 0, y: MOTION.revealY },
-      { opacity: 1, y: 0, duration: MOTION.revealDuration },
-      i * MOTION.revealStagger,
-    );
-  });
-}
-
 export function bindScrollReveals(viewEl: HTMLElement) {
   scrollObservers.get(viewEl)?.disconnect();
 
   const scroller =
     viewEl.querySelector<HTMLElement>("[data-scroll-root]") ?? viewEl;
   const pending = getRevealElements(viewEl).filter(isRevealHidden);
+  const counters = [...viewEl.querySelectorAll<HTMLElement>("[data-counter]")];
 
-  if (!pending.length || prefersReducedMotion()) {
+  if (prefersReducedMotion()) {
     pending.forEach((el) => revealEl(el, 0));
+    counters.forEach((el) => runCounter(el));
     return;
   }
+
+  if (!pending.length && !counters.length) return;
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         const el = entry.target as HTMLElement;
-        if (el.dataset.counter !== undefined) runCounter(el);
-        else revealEl(el);
+        if (el.dataset.counter !== undefined) {
+          const delay = Number(el.dataset.counterIndex ?? "0") * MOTION.counterStagger * 1000;
+          window.setTimeout(() => runCounter(el), delay);
+        } else {
+          revealEl(el);
+        }
         observer.unobserve(el);
       });
     },
     { root: scroller, threshold: MOTION.revealThreshold },
   );
 
+  counters.forEach((el) => observer.observe(el));
+
   pending.forEach((el) => observer.observe(el));
   scrollObservers.set(viewEl, observer);
-}
-
-export function setupViewReveals(viewEl: HTMLElement) {
-  resetViewReveals(viewEl);
-  revealAboveFold(viewEl);
-  bindScrollReveals(viewEl);
-  refreshLenis();
 }
 
 /** Inner pages: above-fold content rides with the panel clip — no second fade. */

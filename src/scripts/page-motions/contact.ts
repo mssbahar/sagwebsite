@@ -49,16 +49,29 @@ export const contactMotion = createPageMotion((root) => {
     hq = null;
   }
 
-  const select = root.querySelector<HTMLSelectElement>("[data-branch-picker]");
-  const onBranchChange = () => {
-    if (!select || !hq) return;
-    if (select.value === "hq") {
+  const picker = root.querySelector<HTMLElement>("[data-branch-picker]");
+  const trigger = picker?.querySelector<HTMLButtonElement>("[data-branch-trigger]");
+  const menu = picker?.querySelector<HTMLElement>("[data-branch-menu]");
+  const label = picker?.querySelector<HTMLElement>("[data-branch-trigger-label]");
+  const options = [...(picker?.querySelectorAll<HTMLButtonElement>("[data-branch-option]") ?? [])];
+
+  const setOpen = (open: boolean) => {
+    if (!menu || !trigger) return;
+    menu.hidden = !open;
+    trigger.setAttribute("aria-expanded", String(open));
+  };
+
+  const chooseBranch = (option: HTMLButtonElement) => {
+    options.forEach((item) => item.setAttribute("aria-selected", String(item === option)));
+    if (label) label.textContent = option.textContent?.trim() ?? "";
+    setOpen(false);
+    if (!hq) return;
+    if (option.dataset.value === "hq") {
       applyBranch(root, hq);
       return;
     }
-    const option = select.selectedOptions[0];
     try {
-      const branch = JSON.parse(option.dataset.branch ?? "") as BranchContact & { name: string };
+      const branch = JSON.parse(option.dataset.branch ?? "") as BranchContact;
       applyBranch(root, {
         name: `Smart Autocare Garage — ${branch.name}`,
         address: branch.address,
@@ -70,8 +83,28 @@ export const contactMotion = createPageMotion((root) => {
       applyBranch(root, hq);
     }
   };
-  select?.addEventListener("change", onBranchChange);
-  cleanups.push(() => select?.removeEventListener("change", onBranchChange));
+
+  const onTrigger = () => setOpen(Boolean(menu?.hidden));
+  const onDocPointer = (event: PointerEvent) => {
+    if (!picker?.contains(event.target as Node)) setOpen(false);
+  };
+  const onKey = (event: KeyboardEvent) => {
+    if (event.key === "Escape") setOpen(false);
+  };
+
+  trigger?.addEventListener("click", onTrigger);
+  options.forEach((option) => {
+    const onChoose = () => chooseBranch(option);
+    option.addEventListener("click", onChoose);
+    cleanups.push(() => option.removeEventListener("click", onChoose));
+  });
+  document.addEventListener("pointerdown", onDocPointer);
+  document.addEventListener("keydown", onKey);
+  cleanups.push(() => {
+    trigger?.removeEventListener("click", onTrigger);
+    document.removeEventListener("pointerdown", onDocPointer);
+    document.removeEventListener("keydown", onKey);
+  });
 
   const ctaBg = root.querySelector<HTMLElement>("[data-contact-cta-bg]");
   if (ctaBg) {

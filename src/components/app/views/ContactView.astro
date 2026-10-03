@@ -7,7 +7,7 @@ import { ChevronDown, ExternalLink } from "@lucide/astro";
 import { site } from "../../../data/site";
 import { socialLinks } from "../../../data/social";
 import { contactHero, hqContact } from "../../../data/contact";
-import { mapBranches, branchPayload } from "../../../data/branches";
+import { mapBranches, branchPayload, featuredBranch } from "../../../data/branches";
 
 const contactCards = [
   { icon: "Phone", label: "Call / WhatsApp", key: "phone" as const },
@@ -35,24 +35,52 @@ const contactCards = [
           <PinkDot icon="MapPin" />
           <span>Select a branch</span>
         </label>
-        <div class="contact-branch-picker__select-wrap">
-          <select
+        <div class="contact-branch-picker__select-wrap" data-branch-picker>
+          <button
+            type="button"
             id="contact-branch-select"
-            data-branch-picker
             class="contact-branch-picker__select focus-ring"
+            data-branch-trigger
+            aria-haspopup="listbox"
+            aria-expanded="false"
+            aria-controls="contact-branch-menu"
           >
-            <option value="hq" selected>
-              Headquarters — Subang Jaya
-            </option>
-            {
-              mapBranches.map((b) => (
-                <option value={b.id} data-branch={branchPayload(b)}>
-                  {b.name} ({b.region})
-                </option>
-              ))
-            }
-          </select>
+            <span data-branch-trigger-label>Headquarters — Subang Jaya</span>
+          </button>
           <ChevronDown size={16} class="contact-branch-picker__chevron" aria-hidden="true" />
+          <ul id="contact-branch-menu" class="contact-branch-picker__menu" data-branch-menu role="listbox" hidden>
+            <li role="presentation">
+              <button
+                type="button"
+                class="contact-branch-picker__option"
+                role="option"
+                data-branch-option
+                data-value="hq"
+                aria-selected="true"
+              >
+                Headquarters — Subang Jaya
+              </button>
+            </li>
+            {
+              mapBranches
+                .filter((b) => b.id !== featuredBranch.id)
+                .map((b) => (
+                  <li role="presentation">
+                    <button
+                      type="button"
+                      class="contact-branch-picker__option"
+                      role="option"
+                      data-branch-option
+                      data-value={b.id}
+                      data-branch={branchPayload(b)}
+                      aria-selected="false"
+                    >
+                      {b.name} ({b.region})
+                    </button>
+                  </li>
+                ))
+            }
+          </ul>
         </div>
 
         <div data-branch-details class="contact-branch-details">

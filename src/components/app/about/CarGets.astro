@@ -1,0 +1,48 @@
+---
+import PinkDot from "../PinkDot.astro";
+import { aboutCarGets } from "../../../data/about";
+---
+
+<section class="about-section mb-14" aria-labelledby="car-gets-heading">
+  <div class="car-gets" data-car-gets>
+    <header class="car-gets__head">
+      <div>
+        <div class="mb-5 flex items-center gap-3">
+          <PinkDot icon="ShieldCheck" />
+          <p class="text-xs uppercase tracking-[0.22em] text-white/75">{aboutCarGets.eyebrow}</p>
+        </div>
+        <div class="line-reveal-mask">
+          <h2
+            id="car-gets-heading"
+            class="text-3xl font-black leading-tight tracking-tight md:text-4xl"
+            data-line-reveal
+          >
+            {aboutCarGets.headlineLead} {aboutCarGets.headlineRest}
+          </h2>
+        </div>
+      </div>
+    </header>
+
+    <div class="car-gets__sheet">
+      {
+        aboutCarGets.items.map((item) => (
+          <article class="car-gets__row" data-car-gets-row>
+            <div class="car-gets__photo-frame" data-car-gets-photo>
+              <img
+                class="car-gets__photo"
+                src={item.image}
+                alt={item.imageAlt}
+                width="640"
+                height="400"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <h3 class="car-gets__item-title" data-car-gets-title>{item.title}</h3>
+            <p class="car-gets__item-body" data-car-gets-body>{item.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -14,8 +14,8 @@ export const workshopHero = {
   headline: "Workshop Facilities",
   intro:
     "Precision equipment and a professional environment engineered to deliver the highest standard of automotive care — at every SAG branch nationwide.",
-  image: "/images/branches/branch-05.jpg",
-  imageAlt: "Smart Autocare Garage workshop bay",
+  image: "/images/workshophero.png",
+  imageAlt: "SAG workshop facilities",
 };
 
 export const facilities: Facility[] = [
@@ -28,7 +28,7 @@ export const facilities: Facility[] = [
     longDescription:
       "Professional-grade two-post and four-post lifts give full undercarriage access for comprehensive servicing and inspection at every branch — from oil changes to major repairs.",
     icon: "ArrowUpFromLine",
-    image: "/images/branches/branch-03.jpg",
+    image: "/images/servicelift.png",
   },
   {
     id: "diagnostics",
@@ -39,7 +39,7 @@ export const facilities: Facility[] = [
     longDescription:
       "OBD scanners and computerised diagnostic tools compatible with all makes and models, delivering accurate, fast fault identification before any repair begins.",
     icon: "Cpu",
-    image: "/images/branches/branch-06.jpg",
+    image: "/images/diagnosis2.jpg",
   },
   {
     id: "alignment",
@@ -50,7 +50,7 @@ export const facilities: Facility[] = [
     longDescription:
       "4-wheel alignment ensures optimal tyre wear, improved fuel efficiency and superior handling — calibrated to manufacturer specifications by trained technicians.",
     icon: "CircleDot",
-    image: "/images/branches/branch-08.jpg",
+    image: "/images/services/wheelalignment.jpg",
   },
   {
     id: "customer-lounge",
@@ -61,7 +61,7 @@ export const facilities: Facility[] = [
     longDescription:
       "A clean, comfortable waiting area with Wi-Fi, refreshments and live service updates so you can relax while our technicians work on your vehicle.",
     icon: "Sofa",
-    image: "/images/branches/branch-04.jpg",
+    image: "/images/customerlounge.png",
   },
 ];
 

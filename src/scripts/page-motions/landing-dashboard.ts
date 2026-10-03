@@ -25,52 +25,43 @@ function startFacilityGallery(root: HTMLElement) {
   let timer: number | undefined;
   let lastW = 0;
 
-  const layout = () => {
+  const moving = () => slides.some((slide) => gsap.isTweening(slide));
+
+  const place = (animate: boolean, onDone?: () => void) => {
     const w = viewport.clientWidth;
-    if (w === lastW) return w;
+    if (w < 8) return;
     lastW = w;
-    slides.forEach((slide) => {
-      slide.style.flex = `0 0 ${w}px`;
-      slide.style.width = `${w}px`;
+    slides.forEach((slide, i) => {
+      const x = (i - index) * w;
+      if (!animate || reduce) {
+        gsap.set(slide, { x });
+        return;
+      }
+      gsap.to(slide, {
+        x,
+        duration: 0.7,
+        ease: "power3.inOut",
+        overwrite: "auto",
+        onComplete: i === index ? onDone : undefined,
+      });
     });
-    return w;
+    if (!animate || reduce) onDone?.();
   };
 
-  const snapIfClone = (target: number) => {
-    const w = lastW || layout();
-    if (target === slides.length - 1) {
-      index = 1;
-      gsap.set(track, { x: -w });
-      return;
-    }
-    if (target === 0) {
-      index = realCount;
-      gsap.set(track, { x: -realCount * w });
-    }
-  };
-
-  const setX = (target: number, animate: boolean) => {
-    const w = lastW || layout();
-    const x = -target * w;
-    if (!animate || reduce) {
-      gsap.set(track, { x });
-      snapIfClone(target);
-      return;
-    }
-
-    gsap.to(track, {
-      x,
-      duration: 0.7,
-      ease: "power3.inOut",
-      overwrite: true,
-      onComplete: () => snapIfClone(target),
-    });
+  const settleClone = () => {
+    if (index >= slides.length - 1) index = 1;
+    else if (index <= 0) index = realCount;
+    else return;
+    place(false);
   };
 
   const go = (dir: number) => {
-    if (gsap.isTweening(track)) return;
-    index += dir;
-    setX(index, true);
+    if (moving()) return;
+    settleClone();
+    const next = index + dir;
+    if (next < 0 || next > slides.length - 1) return;
+    index = next;
+    place(true, settleClone);
   };
 
   const stop = () => {
@@ -100,17 +91,23 @@ function startFacilityGallery(root: HTMLElement) {
 
   const onResize = () => {
     const w = viewport.clientWidth;
-    if (w === lastW || w < 8) return;
-    gsap.killTweensOf(track);
-    gsap.set(track, { x: -index * layout() });
-    snapIfClone(index);
+    if (w < 8 || w === lastW) return;
+    slides.forEach((slide) => gsap.killTweensOf(slide));
+    if (index >= slides.length - 1 || index <= 0) settleClone();
+    else place(false);
   };
 
-  gsap.set(track, { x: -layout() });
+  const onVis = () => {
+    if (document.hidden) stop();
+    else start();
+  };
+
+  place(false);
   prevBtn?.addEventListener("click", onPrev);
   nextBtn?.addEventListener("click", onNext);
   host.addEventListener("mouseenter", stop);
   host.addEventListener("mouseleave", start);
+  document.addEventListener("visibilitychange", onVis);
   const ro = new ResizeObserver(onResize);
   ro.observe(viewport);
   start();
@@ -118,12 +115,15 @@ function startFacilityGallery(root: HTMLElement) {
   return () => {
     stop();
     ro.disconnect();
+    document.removeEventListener("visibilitychange", onVis);
     prevBtn?.removeEventListener("click", onPrev);
     nextBtn?.removeEventListener("click", onNext);
     host.removeEventListener("mouseenter", stop);
     host.removeEventListener("mouseleave", start);
-    gsap.killTweensOf(track);
-    gsap.set(track, { clearProps: "transform" });
+    slides.forEach((slide) => {
+      gsap.killTweensOf(slide);
+      gsap.set(slide, { clearProps: "transform" });
+    });
   };
 }
 

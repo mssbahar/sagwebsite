@@ -1,11 +1,10 @@
 import { gsap, prefersReducedMotion } from "../gsap-init";
 import { MOTION } from "../motion";
 import { createPageMotion, getScrollRoot } from "./utils";
-import { initJourneyTimeline } from "./journey-timeline";
 
 export const aboutMotion = createPageMotion((root) => {
   const scroller = getScrollRoot(root);
-  let teardownJourney = initJourneyTimeline(root, scroller);
+  const carGets = root.querySelector<HTMLElement>("[data-car-gets]");
 
   root.querySelectorAll<HTMLElement>("[data-line-reveal]").forEach((line) => {
     gsap.fromTo(
@@ -44,9 +43,12 @@ export const aboutMotion = createPageMotion((root) => {
     );
   });
 
-  const planCards = [...root.querySelectorAll<HTMLElement>("[data-about-plan]")];
+  const planCards = [
+    ...root.querySelectorAll<HTMLElement>("[data-about-plan]"),
+  ];
   const plansGrid = root.querySelector<HTMLElement>("[data-about-plans-grid]");
   const planCleanups: Array<() => void> = [];
+  let carGetsObserver: IntersectionObserver | null = null;
 
   const setExpanded = (card: HTMLElement | null) => {
     planCards.forEach((item) => {
@@ -76,6 +78,73 @@ export const aboutMotion = createPageMotion((root) => {
     });
   });
 
+  if (carGets && !prefersReducedMotion()) {
+    const photos = carGets.querySelectorAll<HTMLElement>(
+      "[data-car-gets-photo]",
+    );
+    const titles = carGets.querySelectorAll<HTMLElement>(
+      "[data-car-gets-title]",
+    );
+    const bodies = carGets.querySelectorAll<HTMLElement>(
+      "[data-car-gets-body]",
+    );
+    const pieces = [photos, titles, bodies];
+
+    gsap.set(pieces, { autoAlpha: 0, y: 16 });
+
+    const play = () => {
+      gsap
+        .timeline({ overwrite: "auto" })
+        .to(
+          photos,
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.55,
+            stagger: 0.06,
+            ease: MOTION.panelEase,
+            clearProps: "transform",
+          },
+          0,
+        )
+        .to(
+          titles,
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.45,
+            stagger: 0.06,
+            ease: MOTION.panelEase,
+            clearProps: "transform",
+          },
+          0.08,
+        )
+        .to(
+          bodies,
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.4,
+            stagger: 0.06,
+            ease: MOTION.panelEase,
+            clearProps: "transform",
+          },
+          0.14,
+        );
+    };
+
+    carGetsObserver = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        carGetsObserver?.disconnect();
+        carGetsObserver = null;
+        play();
+      },
+      { root: scroller, threshold: 0.15 },
+    );
+    carGetsObserver.observe(carGets);
+  }
+
   if (planCards.length && plansGrid && !prefersReducedMotion()) {
     gsap.fromTo(
       planCards,
@@ -97,8 +166,14 @@ export const aboutMotion = createPageMotion((root) => {
   }
 
   return () => {
+    carGetsObserver?.disconnect();
+    if (carGets) {
+      gsap.killTweensOf(
+        carGets.querySelectorAll(
+          "[data-car-gets-photo], [data-car-gets-title], [data-car-gets-body]",
+        ),
+      );
+    }
     planCleanups.forEach((fn) => fn());
-    teardownJourney?.();
-    teardownJourney = undefined;
   };
 });

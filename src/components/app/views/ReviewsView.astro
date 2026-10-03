@@ -61,13 +61,16 @@ import { reviewsTrust } from "../../../data/reviews";
                     <div data-review-stars class="reviews-showcase__stars" aria-label="5 out of 5 stars">
                       {Array.from({ length: 5 }).map(() => <Star size={14} class="fill-accent" />)}
                     </div>
-                    <span class="reviews-showcase__time">{t.timeAgo}</span>
+                    {t.timeAgo ? <span class="reviews-showcase__time">{t.timeAgo}</span> : null}
                   </div>
 
-                  <p class="reviews-showcase__quote">{t.quote}</p>
+                  <p class="reviews-showcase__quote" data-review-quote>{t.quote}</p>
+                  <button type="button" class="reviews-showcase__more focus-ring" data-review-more hidden>
+                    Read more
+                  </button>
 
                   {
-                    t.photos && (
+                    t.photos && t.photos.length > 0 && (
                       <div class="reviews-showcase__photos">
                         {t.photos.map((src) => (
                           <img src={src} alt="" class="reviews-showcase__photo" loading="lazy" />

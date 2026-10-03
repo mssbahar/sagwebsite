@@ -2,12 +2,11 @@
 import InnerPage from "../InnerPage.astro";
 import CtaBanner from "../CtaBanner.astro";
 import PinkDot from "../PinkDot.astro";
-import JourneyTimeline from "../about/JourneyTimeline.astro";
+import CarGets from "../about/CarGets.astro";
 import {
   aboutHero,
   aboutPerformance,
   aboutVision,
-  aboutTimeline,
   aboutFuturePlans,
   aboutCta,
 } from "../../../data/about";
@@ -42,57 +41,53 @@ import {
   </section>
 
   <!-- Vision -->
-  <section class="about-section mb-14 border-t border-white/10 pt-10">
+  <section class="about-vision about-section mb-14" aria-labelledby="about-vision-heading">
     <div class="reveal-fade mb-5 flex items-center gap-3">
-      <div class="h-5 w-5 shrink-0 rounded bg-accent" aria-hidden="true"></div>
+      <PinkDot icon="Eye" />
       <p class="text-xs uppercase tracking-[0.22em] text-white/75">{aboutVision.eyebrow}</p>
     </div>
-    <div class="line-reveal-mask mb-5 max-w-2xl">
-      <h2 class="text-3xl font-black leading-tight md:text-4xl" data-line-reveal>
-        {aboutVision.headline}
-      </h2>
+    <div class="about-vision__layout">
+      <div class="line-reveal-mask">
+        <h2 id="about-vision-heading" class="about-vision__title text-3xl font-black leading-tight tracking-tight md:text-5xl" data-line-reveal>
+          {aboutVision.headline}
+        </h2>
+      </div>
+      <div class="about-vision__copy">
+        <p class="about-vision__lead">{aboutVision.lead}</p>
+        <p class="about-vision__body">{aboutVision.body}</p>
+      </div>
     </div>
-    <p class="reveal mb-5 max-w-2xl text-sm leading-relaxed text-accent md:text-base">{aboutVision.lead}</p>
-    <p class="reveal max-w-2xl text-sm leading-relaxed text-white/75 md:text-base">{aboutVision.body}</p>
   </section>
 
-  <!-- Stats -->
-  <section class="about-section mb-14">
-    <div class="reveal-fade mb-2 flex items-center gap-3">
+  <!-- Performance -->
+  <section class="about-record about-section mb-14" aria-labelledby="about-record-heading">
+    <div class="reveal-fade mb-3 flex items-center gap-3">
       <PinkDot icon="TrendingUp" />
-      <p class="text-xs uppercase tracking-[0.22em] text-white/75">{aboutPerformance.eyebrow}</p>
+      <p id="about-record-heading" class="text-xs uppercase tracking-[0.22em] text-white/75">{aboutPerformance.eyebrow}</p>
     </div>
-    <p class="reveal-fade mb-8 max-w-xl text-sm text-white/60">{aboutPerformance.tagline}</p>
+    <p class="reveal-fade max-w-xl text-sm text-white/60">{aboutPerformance.tagline}</p>
 
-    <div class="about-stat-row reveal-fade grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-0">
+    <dl class="about-record__list">
       {
         aboutPerformance.stats.map((stat, i) => (
-          <div class:list={["about-stat-cell px-0 md:px-6", i > 0 && "md:border-l md:border-white/10"]}>
-            <div
-              class="mb-1 text-3xl font-black tabular-nums text-white md:text-4xl"
+          <div class="about-record__item">
+            <dt>{stat.label}</dt>
+            <dd
               data-counter={String(stat.value)}
+              data-counter-index={String(i)}
               data-suffix={stat.suffix ?? ""}
               data-numeric={stat.numeric ? "true" : "false"}
             >
-              {stat.value}
+              {typeof stat.value === "number" && stat.value >= 10000 ? stat.value.toLocaleString() : stat.value}
               {stat.suffix ?? ""}
-            </div>
-            <div class="text-xs leading-snug text-white/75 md:text-sm">{stat.label}</div>
+            </dd>
           </div>
         ))
       }
-    </div>
+    </dl>
   </section>
 
-  <!-- Journey timeline -->
-  <section class="about-section mb-14">
-    <div class="reveal-fade mb-10 flex items-center gap-3">
-      <PinkDot icon="Clock" />
-      <p class="text-xs uppercase tracking-[0.22em] text-white/75">Our Journey</p>
-    </div>
-
-    <JourneyTimeline items={aboutTimeline} />
-  </section>
+  <CarGets />
 
   <!-- Future plans -->
   <section class="about-section mb-14 border-t border-white/10 pt-10">

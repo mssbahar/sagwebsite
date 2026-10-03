@@ -21,7 +21,7 @@ export const branches: Branch[] = [
     region: "Selangor",
     address: "No.5, Lorong SS13/3B, Subang Jaya Industrial Estate, 47500 Subang Jaya.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
-    phone: "010-212 3939",
+    phone: "012-605 6223",
     mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Subang+Jaya",
     image: "/images/branches/branch-01.jpg",
     featured: true,
@@ -35,7 +35,7 @@ export const branches: Branch[] = [
     region: "Selangor",
     address: "No.26, Jalan Astaka 4B/KU2, Bandar Bukit Raja, 41050 Klang, Selangor.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
-    phone: "010-212 3939",
+    phone: "012-992 4223",
     mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Bukit+Raja",
     image: "/images/branches/branch-02.jpg",
     lat: 3.0896,
@@ -48,7 +48,7 @@ export const branches: Branch[] = [
     region: "Selangor",
     address: "Lot 1357, Batu 15 1/2, Jalan Semenyih, 43000 Kajang, Selangor.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
-    phone: "010-212 3939",
+    phone: "016-605 9470",
     mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Kajang",
     image: "/images/branches/branch-03.jpg",
     lat: 2.9651,
@@ -61,7 +61,7 @@ export const branches: Branch[] = [
     region: "Kuala Lumpur",
     address: "No.46, Jalan Chan Sow Lin, 55200 Kuala Lumpur.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
-    phone: "010-212 3939",
+    phone: "012-802 4223",
     mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Chan+Sow+Lin",
     image: "/images/branches/branch-04.jpg",
     lat: 3.1276,
@@ -74,7 +74,7 @@ export const branches: Branch[] = [
     region: "Johor",
     address: "No.21, Jalan Mutiara Emas 5/2, Taman Mount Austin, 81100 Johor Bahru, Johor.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
-    phone: "010-212 3939",
+    phone: "012-263 1223",
     mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Mount+Austin",
     image: "/images/branches/branch-05.jpg",
     lat: 1.5488,
@@ -87,7 +87,7 @@ export const branches: Branch[] = [
     region: "Johor",
     address: "No.15, Jalan Persiaran Skudai 8, Pusat Perusahaan Skudai 8, 81300 Skudai, Johor.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
-    phone: "010-212 3939",
+    phone: "012-413 4223",
     mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Skudai",
     image: "/images/branches/branch-06.jpg",
     lat: 1.5269,
@@ -100,7 +100,7 @@ export const branches: Branch[] = [
     region: "Johor",
     address: "Lot 14, Jalan Kejuruteraan 5, Jalan Genuang, Kawasan Perindustrian, 85000 Segamat, Johor.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
-    phone: "010-212 3939",
+    phone: "012-687 8223",
     mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Segamat",
     image: "/images/branches/branch-07.jpg",
     lat: 2.4923,
@@ -112,8 +112,8 @@ export const branches: Branch[] = [
     name: "Kota Bharu",
     region: "Kelantan",
     address: "Lot 101, Jalan Dusun Muda, 15200 Kota Bharu, Kelantan.",
-    hours: "Sat – Thu 9:30AM – 6:00PM",
-    phone: "010-212 3939",
+    hours: "Mon – Sat 9:30AM – 6:00PM",
+    phone: "012-865 7223",
     mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Kota+Bharu",
     image: "/images/branches/branch-08.jpg",
     lat: 6.1211,
@@ -126,7 +126,7 @@ export const branches: Branch[] = [
     region: "Pulau Pinang",
     address: "No.11A, Lorong Asas Jaya 11, Kawasan Industri Ringan Asas Jaya, 14000 Bukit Mertajam, Pulau Pinang.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
-    phone: "010-212 3939",
+    phone: "012-417 4223",
     mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Bukit+Mertajam",
     image: "/images/branches/branch-09.jpg",
     lat: 5.3643,
@@ -139,7 +139,7 @@ export const branches: Branch[] = [
     region: "Sarawak",
     address: "Lot 2033, Bintawa Industrial Estate, Jalan Semangat, 93450 Kuching, Sarawak.",
     hours: "Mon – Sat 8:30AM – 5:00PM",
-    phone: "010-212 3939",
+    phone: "012-806 4223",
     mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Kuching",
     image: "/images/branches/branch-10.jpg",
     lat: 1.5719,
@@ -147,16 +147,30 @@ export const branches: Branch[] = [
     map: { x: 82, y: 76 },
   },
   {
-    id: "branch-11",
-    name: "Branch 11",
-    region: "TBD",
-    address: "Address pending — client to confirm 11th branch details.",
+    id: "air-itam",
+    name: "Air Itam",
+    region: "Pulau Pinang",
+    address: "No. 496-H, Jalan Air Itam, 11400 Georgetown, Penang.",
     hours: "Mon – Sat 9:30AM – 6:00PM",
-    phone: "010-212 3939",
-    mapsUrl: "#",
-    image: "/images/branches/branch-10.jpg",
-    lat: 0,
-    lng: 0,
+    phone: "012-278 9223",
+    mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Air+Itam",
+    image: "/images/branches/quick-air-itam.jpg",
+    lat: 5.4025,
+    lng: 100.278,
+    map: { x: 39, y: 50 },
+  },
+  {
+    id: "seremban-2",
+    name: "Seremban 2",
+    region: "Negeri Sembilan",
+    address: "No. 178, Jalan S2 B22, Pusat Perdagangan Centrio, Seremban 2, 70300 Seremban.",
+    hours: "Mon – Sat 9:30AM – 6:00PM",
+    phone: "012-875 4223",
+    mapsUrl: "https://maps.google.com/?q=Smart+Autocare+Garage+Seremban+2",
+    image: "/images/branches/quick-seremban.jpg",
+    lat: 2.691,
+    lng: 101.898,
+    map: { x: 48, y: 66 },
   },
 ];
 
@@ -190,17 +204,4 @@ export function distanceKm(a: { lat: number; lng: number }, b: { lat: number; ln
   const h =
     Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
   return 2 * R * Math.asin(Math.sqrt(h));
-}
-
-export function findNearestBranch(
-  list: Pick<Branch, "id" | "lat" | "lng">[],
-  user: { lat: number; lng: number },
-) {
-  let best: { id: string; km: number } | null = null;
-  for (const b of list) {
-    if (!b.lat && !b.lng) continue;
-    const km = distanceKm(user, b);
-    if (!best || km < best.km) best = { id: b.id, km };
-  }
-  return best;
 }
