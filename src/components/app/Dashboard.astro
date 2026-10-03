@@ -152,45 +152,47 @@ const heroOverlay = "dashboard-bento__hero-overlay absolute inset-0";
 
         <!-- RIGHT: social / book now -->
         <div class="dashboard-bento__social">
-          <a
-            href={ig}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-dashboard-tile
-            aria-label="Instagram"
-            class={socialSq}
-          >
-            <SocialIcon name="instagram" size={20} />
-          </a>
-          <a
-            href={fb}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-dashboard-tile
-            aria-label="Facebook"
-            class={socialSq}
-          >
-            <SocialIcon name="facebook" size={20} />
-          </a>
-          <a
-            href={tt}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-dashboard-tile
-            aria-label="TikTok"
-            class={socialSq}
-          >
-            <SocialIcon name="tiktok" size={20} />
-          </a>
+          <div class="dashboard-bento__social-group">
+            <a
+              href={ig}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-dashboard-tile
+              aria-label="Instagram"
+              class={socialSq}
+            >
+              <SocialIcon name="instagram" size={20} />
+            </a>
+            <a
+              href={fb}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-dashboard-tile
+              aria-label="Facebook"
+              class={socialSq}
+            >
+              <SocialIcon name="facebook" size={20} />
+            </a>
+            <a
+              href={tt}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-dashboard-tile
+              aria-label="TikTok"
+              class={socialSq}
+            >
+              <SocialIcon name="tiktok" size={20} />
+            </a>
+          </div>
           <a
             href={site.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             data-dashboard-tile
             aria-label="Book Now"
-            class={`dashboard-bento__social-app ${tile} flex items-center justify-center px-2 text-center text-[0.65rem] font-bold tracking-wide text-white uppercase transition-colors hover:text-accent sm:text-xs`}
+            class={`dashboard-bento__social-app ${tile} flex items-center justify-center text-center text-[0.65rem] font-bold tracking-wide text-white uppercase transition-colors hover:text-accent sm:text-xs`}
           >
-            Book Now
+            <span class="block w-full text-center leading-tight">Book<br />Now</span>
           </a>
         </div>
 
