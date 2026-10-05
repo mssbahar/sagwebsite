@@ -186,11 +186,7 @@
     pointer-events: auto;
   }
   .action-btn-divider {
-    width: 1px;
-    height: 1.05em;
-    flex-shrink: 0;
-    background: currentColor;
-    opacity: 0.35;
+    display: none;
   }
 
   /* Explore CTA idle glow on landing only */
@@ -600,7 +596,7 @@
   }
 
   .dashboard-bento__social {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(3.5rem, 1.35fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
   }
 
   .dashboard-bento__actions {
@@ -3016,7 +3012,7 @@ html[data-hash-inner] .view[data-view="landing"] {
     justify-self: end;
     width: max-content;
     max-width: 100%;
-    grid-template-columns: auto 4.25rem;
+    grid-template-columns: auto auto;
     gap: 0.5rem;
     height: 4.25rem;
     min-height: 0;
@@ -3038,7 +3034,7 @@ html[data-hash-inner] .view[data-view="landing"] {
   }
 
   .dashboard-bento__social-group .dashboard-bento__social-sq {
-    width: 4rem;
+    width: 3.2rem;
     height: auto;
     min-height: 0;
     aspect-ratio: auto;
@@ -3051,20 +3047,6 @@ html[data-hash-inner] .view[data-view="landing"] {
   .dashboard-bento__social-group .dashboard-bento__social-sq:hover {
     border: 0;
     box-shadow: none;
-  }
-
-  .dashboard-bento__social-app {
-    width: 4.25rem;
-    height: 100%;
-    min-height: 0;
-    aspect-ratio: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-inline: 0.15rem;
-    font-size: 0.56rem;
-    text-align: center;
-    line-height: 1.05;
   }
 
   .dashboard-bento__hero,
@@ -3117,9 +3099,44 @@ html[data-hash-inner] .view[data-view="landing"] {
   }
 }
 
+/* Book sits in its own tile, same surface as the social icons. */
+.dashboard-bento__social-app {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  gap: 0.3rem;
+  width: auto;
+  min-width: 4.75rem;
+  height: auto;
+  margin: 0;
+  padding-inline: 0.7rem;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dashboard-bento__social-app:hover {
+  color: var(--color-accent);
+}
+
+.dashboard-bento__social-app svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+}
+
 /* Desktop keeps the three social icons as separate tiles. */
 @media (min-width: 1024px) {
   .dashboard-bento__social-group {
     display: contents;
+  }
+
+  .dashboard-bento__social-sq {
+    align-self: stretch;
   }
 }

@@ -190,9 +190,10 @@ const heroOverlay = "dashboard-bento__hero-overlay absolute inset-0";
             rel="noopener noreferrer"
             data-dashboard-tile
             aria-label="Book Now"
-            class={`dashboard-bento__social-app ${tile} flex items-center justify-center text-center text-[0.65rem] font-bold tracking-wide text-white uppercase transition-colors hover:text-accent sm:text-xs`}
+            class={`dashboard-bento__social-app ${tile} focus-ring`}
           >
-            <span class="block w-full text-center leading-tight">Book<br />Now</span>
+            <span>Book Now</span>
+            <ArrowUpRight size={16} stroke-width={2.25} aria-hidden="true" />
           </a>
         </div>
 

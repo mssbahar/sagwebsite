@@ -5,9 +5,23 @@ export type SocialLink = {
   icon: "tiktok" | "instagram" | "facebook";
 };
 
-/** Placeholder URLs — client to confirm */
 export const socialLinks: SocialLink[] = [
-  { id: "tiktok", label: "TikTok", href: "#", icon: "tiktok" },
-  { id: "instagram", label: "Instagram", href: "#", icon: "instagram" },
-  { id: "facebook", label: "Facebook", href: "#", icon: "facebook" },
+  {
+    id: "tiktok",
+    label: "TikTok",
+    href: "https://www.tiktok.com/@smartautocaregaragehq",
+    icon: "tiktok",
+  },
+  {
+    id: "instagram",
+    label: "Instagram",
+    href: "https://www.instagram.com/smartautocaregarage",
+    icon: "instagram",
+  },
+  {
+    id: "facebook",
+    label: "Facebook",
+    href: "https://www.facebook.com/share/1ExJXbyQe7/",
+    icon: "facebook",
+  },
 ];
