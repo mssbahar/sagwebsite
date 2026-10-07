@@ -383,6 +383,7 @@ function toggleLandingVideo(view: ViewName) {
   const reduce = prefersReducedMotion();
   const phase = document.documentElement.dataset.landingPhase;
   if (view === "landing") {
+    if (phase !== "cinema") video.muted = true;
     gsap.killTweensOf(video);
     if (reduce) {
       gsap.set(video, { filter: "blur(0px)", scale: 1.04 });
@@ -404,6 +405,7 @@ function toggleLandingVideo(view: ViewName) {
     return;
   }
 
+  video.muted = true;
   video.pause?.();
   gsap.killTweensOf(video);
   if (reduce) {

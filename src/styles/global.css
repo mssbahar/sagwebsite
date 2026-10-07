@@ -30,11 +30,6 @@
   #app {
     min-height: 100dvh;
     height: 100%;
-    background-color: #000;
-    background-image: url("/images/bgtire.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
   }
 
   button:not(:disabled),
@@ -1081,11 +1076,22 @@ html[data-hash-inner] .view[data-view="landing"] {
   overflow-x: hidden;
 }
 
+/* Tire texture behind About, Promotions, and the other inner pages. */
+.inner-page-panel.glass {
+  background-color: #0c0c0c;
+  background-image:
+    linear-gradient(rgb(0 0 0 / 0.4), rgb(0 0 0 / 0.55)),
+    url("/images/bgtire.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .inner-page-nav {
   background: linear-gradient(
     to bottom,
-    rgb(0 0 0 / 0.94) 0%,
-    rgb(0 0 0 / 0.72) 72%,
+    rgb(0 0 0 / 0.45) 0%,
+    rgb(0 0 0 / 0.15) 72%,
     rgb(0 0 0 / 0) 100%
   );
   -webkit-backdrop-filter: blur(10px);

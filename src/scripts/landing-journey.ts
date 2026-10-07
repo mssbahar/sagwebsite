@@ -53,6 +53,7 @@ export function initLandingJourney() {
 
   const unmuteIntro = async () => {
     if (landing.dataset.landingPhase !== "cinema") return;
+    if (document.documentElement.dataset.appView !== "landing") return;
     video.muted = false;
     setSoundButtonVisible(false);
     try {
@@ -184,7 +185,17 @@ export function initLandingJourney() {
 
   document.addEventListener("view:enter", (event) => {
     const view = (event as CustomEvent<string>).detail;
-    if (view !== "landing") return;
+    if (view !== "landing") {
+      video.muted = true;
+      if (landing.dataset.landingPhase === "cinema") {
+        finishing = true;
+        video.pause();
+        showLayer(chrome, false);
+        setSoundButtonVisible(false);
+        setPhase("idle");
+      }
+      return;
+    }
     if (landing.dataset.landingPhase === "cinema") return;
     showHome();
   });
