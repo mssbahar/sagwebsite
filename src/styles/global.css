@@ -30,6 +30,11 @@
   #app {
     min-height: 100dvh;
     height: 100%;
+    background-color: #000;
+    background-image: url("/images/bgtire.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   button:not(:disabled),
