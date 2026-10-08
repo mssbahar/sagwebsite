@@ -1,5 +1,4 @@
 import { gsap, prefersReducedMotion } from "../gsap-init";
-import { playUiClick } from "../audio";
 import { createPageMotion } from "./utils";
 
 export const landingMotion = createPageMotion(() => {
@@ -132,7 +131,6 @@ export const dashboardMotion = createPageMotion((root) => {
   if (prefersReducedMotion()) return stopGallery;
 
   const onEnter = (event: Event) => {
-    playUiClick();
     gsap.to(event.currentTarget as HTMLElement, {
       filter: "brightness(1.04)",
       duration: 0.5,
